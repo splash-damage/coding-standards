@@ -55,10 +55,10 @@
 #include "UnrealNetwork.h"
 
 // [cpp.namespace.private] use a namespace to wrap translation-unit local free functions 
-// defined only in cpp files. Also mark them as static to enforce internal only linkage.
+//	defined only in cpp files. The namespace will enforce internal only linkage.
 namespace SDCodingStandardHelpers
 {
-	static void PrivateHelper(const USDCodingStandardExampleComponent& Object)
+	void PrivateHelper(const USDCodingStandardExampleComponent& Object)
 	{
 	}
 }
@@ -80,15 +80,15 @@ void BraceStyle()
 
 	if (TrueCondition)
 	{
-		/* ... */
+		// ... 
 	}
 	else if (SomethingElse)
 	{
-		/* ... */
+		// ... 
 	}
 	else // !SomethingElse and !TrueCondition
 	{
-		/* ... */
+		// ... 
 	}
 
 	// for `switch` statements follow Unreal's guideline
@@ -98,7 +98,7 @@ void BraceStyle()
 	for (;/*...*/;)
 	{
 	}
-	
+
 	// [cpp.return.early] use early returns to avoid excessive nesting
 	//	especially for pre-conditions / contracts
 	//	one exception is logic flow where too many early returns would hurt readability
@@ -117,7 +117,7 @@ void BraceStyle()
 	// [cpp.if.init] use the if-with-initializer idiom
 	if (bool IsGame = FApp::IsGame())
 	{
-		/* ... */
+		// ... 
 	}
 }
 
@@ -127,16 +127,15 @@ void BraceStyle()
 FIntPoint CachedCoordinates; // PASSABLE
 class MyBigObject
 {
-	/* ... */
+	// ... 
 };
 MyBigObject Cache1; // BAD
 MyBigObject Cache2; // BAD - maybe this is started first, not Cache1
 
 // [cpp.return] consider using TOptional for returns that can fail
 //	instead of using C style pass by reference
-TOptional<FIntRect> IntersectTest(const FIntPoint &min, const FIntPoint &max)
+TOptional<FIntRect> IntersectTest(const FIntPoint& min, const FIntPoint& max)
 {
-	/* ... */
 	return (min.X > max.X || min.Y > max.Y) ? TOptional<FIntRect>() : FIntRect(min, max);
 }
 
@@ -148,23 +147,23 @@ float DoPassBlueprintVarStructs(const FSDCodingStandardBlueprintVarGroup &vars)
 	return vars.CameraTraceVolumeWidth / 2.f;
 }
 
-void DontWasteMemory(AActor *Actor)
+void DontWasteMemory(const AActor& Actor)
 {
 	// [ue.container] Mind your allocations!
 	//	don't go to the heap, go to the stack!
-	TInlineComponentArray<UPrimitiveComponent*> PrimComponents; // 24 item reserved by default
-	Actor->GetComponents(PrimComponents);
-	
+	TInlineComponentArray<const UPrimitiveComponent*> PrimComponents; // 24 item reserved by default
+	Actor.GetComponents(PrimComponents);
+
 	// [ue.container] [ue.ecs.get] Customize the get-ers for this purpose!
 	using TCustomAlloc = TInlineAllocator<32>;
-	TArray<UActorComponent *, TCustomAlloc> LocalItems;
-	Actor->GetComponents<UActorComponent, TCustomAlloc>(LocalItems);
-	
+	TArray<UActorComponent*, TCustomAlloc> LocalItems;
+	Actor.GetComponents<UActorComponent, TCustomAlloc>(LocalItems);
+
 	// [ue.container.reserve] Prepare upfront the containers
 	//	cut down on the need to allocate per-item
 	PrimComponents.Reserve(64);
 	PrimComponents.Init(nullptr, 64);
-	
+
 	// [ue.container.reset] Don't empty, just reset!
 	PrimComponents.Empty(); // BAD - deallocates for new 0 size
 	PrimComponents.Reset(); // GOOD - same effect, but instant, no realloc
@@ -205,9 +204,9 @@ void EngineChanges()
 {
 	if (true)
 	{
-// @SPLASH_DAMAGE_CHANGE: <author email> - BEGIN: <JIRA tag> <description>
-		/* ... */
-// @SPLASH_DAMAGE_CHANGE: <author email> - END
+		// @SPLASH_DAMAGE_CHANGE: <author email> - BEGIN: <JIRA tag> <description>
+				// ... 
+		// @SPLASH_DAMAGE_CHANGE: <author email> - END
 	}
 
 	// - always place the markers at column 1, no matter how indented the modified code is
@@ -216,15 +215,15 @@ void EngineChanges()
 	//	 i.e. commenting out the section vs actually removing it
 }
 
-void GameWithEditorChanges(TArray<int> Widgets)
+void GameWithEditorChanges(const TArray<int>& Widgets)
 {
-// [markup.editor] isolate Editor specific changes in game code
+	// [markup.editor] isolate Editor specific changes in game code
 #if WITH_EDITOR
-	/* ... */
+	// ... 
 
 	// [assert.editor] never assert in Editor code - try to recover to your best effort!
 	check(Widgets.Num()); // <- BAD, will force-crash and potentially destroy work
-	ensureMsgf(Widgets.Num(), TEXT("Must have widgets selected!")); // <- GOOD, doesn't force-crash
+	ensureMsgf(Widgets.Num(), TEXT("Must have widgets selected!")); // <- BETTER, doesn't force-crash
 #endif
 }
 
@@ -249,24 +248,24 @@ void AutoStyle()
 	auto still_bad = static_cast<const int>(Int); // <- BAD: type is still `int`
 
 	// [cpp.auto.golden-rule] ALWAYS mark auto with the appropriate qualifiers:
-	//	const, &, * - even if it's superfluous
-	auto &proper_ref = Int;
-	auto &enforce_ref = RefInt;
+	//		const, &, * - even if it's superfluous
+	auto& proper_ref = Int;
+	auto& enforce_ref = RefInt;
 	auto hidden_ptr = &Int; // <- BAD even if it still works
-	auto *explicit_ptr = PtrInt;
-	const auto &explicit_ref = RefInt;
+	auto* explicit_ptr = PtrInt;
+	const auto& explicit_ref = RefInt;
 
 	// [cpp.auto.init.lbmd] a generalization of the always-initialized is the
 	//	self calling lambda technique (bonus: very useful for `const`)
 	const auto InitLevel = []()
 	{
-	// possible example of complicated logic
-	// that cannot be easily implemented with the ?: operator
-	//
-	//	if (auto CamMgr = (static_cast<ACameraManager *>(PC))->GetCameraManager())
-	//		return CamMgr->GetCurrentHeightLevel();
-	//	else
-			return 0;
+		// possible example of complicated logic
+		// that cannot be easily implemented with the ?: operator
+		//
+		//	if (auto CamMgr = (static_cast<ACameraManager *>(PC))->GetCameraManager())
+		//		return CamMgr->GetCurrentHeightLevel();
+		//	else
+		return 0;
 	}(); // <- called here immediately, so guaranteed to get a default value
 
 	// [cpp.auto.fwd] Don't use `auto &&` unless you know what you are doing
@@ -288,19 +287,19 @@ void NumericLimits()
 	// See http://api.unrealengine.com/INT/API/Runtime/Core/Math/TNumericLimits/
 
 	// E.g. For all floating point types
-	float MaxPositiveFloatValue = TNumericLimits<float>::Max();
-	float MinPositiveFloatValue = TNumericLimits<float>::Min();
-	float MinNegativeFloatValue = TNumericLimits<float>::Lowest();
+	const float MaxPositiveFloatValue = TNumericLimits<float>::Max();
+	const float MinPositiveFloatValue = TNumericLimits<float>::Min();
+	const float MinNegativeFloatValue = TNumericLimits<float>::Lowest();
 
 	// E.g. For integral types
-	int32 MaxPositiveIntValue = TNumericLimits<int32>::Max();
-	int32 MinNegativeIntValue = TNumericLimits<int32>::Min(); // This is the same as Lowest() for all integral types.
+	const int32 MaxPositiveIntValue = TNumericLimits<int32>::Max();
+	const int32 MinNegativeIntValue = TNumericLimits<int32>::Min(); // This is the same as Lowest() for all integral types.
 }
 
 void ASDCodingStandardExampleActor::BeginPlay()
 {
 	// [ue.ecs.super] always call Super:: method for Actor/Component tickable overridden functions
-	// other regular methods don't necessary need to do this
+	//	other regular methods don't necessary need to do this
 	Super::BeginPlay();
 }
 
@@ -315,7 +314,7 @@ void ASDCodingStandardExampleActor::OnRep_WantsToSprint()
 {
 }
 
-void USDCodingStandardExampleComponent::LambdaStyle(AActor *ExternalEntity)
+void USDCodingStandardExampleComponent::LambdaStyle(const AActor* ExternalEntity)
 {
 	// [cpp.lambda.general] use lambda's to your advantage
 	//	especially when they will isolate work in the implementation
@@ -349,7 +348,7 @@ void USDCodingStandardExampleComponent::LambdaStyle(AActor *ExternalEntity)
 	//	- by value: uses template rules; will preserve `const`
 	//	- init capture: uses `auto` rules; WILL MESS UP `const` and `&` (add them back manually)
 	const int Original = 0;
-	const int &Reference = Original;
+	const int& Reference = Original;
 	auto lambda_auto = [Original, Duplicate = Original, &RefDuplicate = Original, NotReference = Reference]()
 	{
 		// Original => `const int`
