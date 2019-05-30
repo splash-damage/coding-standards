@@ -204,9 +204,9 @@ void EngineChanges()
 {
 	if (true)
 	{
-		// @SPLASH_DAMAGE_CHANGE: <author email> - BEGIN: <JIRA tag> <description>
-				// ... 
-		// @SPLASH_DAMAGE_CHANGE: <author email> - END
+// @SPLASH_DAMAGE_CHANGE: <author email> - BEGIN: <JIRA tag> <description>
+		// ... 
+// @SPLASH_DAMAGE_CHANGE: <author email> - END
 	}
 
 	// - always place the markers at column 1, no matter how indented the modified code is
