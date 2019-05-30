@@ -104,7 +104,7 @@ public:
 	//	- definitions(bodies) inside a class/struct are implicitly inline!
 	// [comment.useless] DON'T write meaningless comments!
 	//	they should always reflect bigger purpose or reveal hidden details
-	/** Returns Mesh subobject **/
+	// Returns Mesh subobject
 	/* BAD -> */ FORCEINLINE USkeletalMeshComponent* GetMesh() const { return MyMesh; } /* <- BAD */
 
 	// [class.inline.good] Move the definitions of inline function outside the class
@@ -121,8 +121,8 @@ protected:
 	// [ue.ecs.gc] never use naked pointers to UObject's, always have UPROPERTY or UE smart ptr
 	//	Generally, for storing pointers to classes you don't own, use TWeakObjectPtr.
 	//	Don't initialise TWeakObjectPtr as it will force you to include the header file for the container class.
-	TWeakObjectPtr<USkeletalMeshComponent> OtherMesh; /* <- GOOD */
-	//TWeakObjectPtr<USkeletalMeshComponent> AnotherMesh = nullptr; /* <- BAD and not compiling */
+	TWeakObjectPtr<USkeletalMeshComponent> OtherMesh; // <- GOOD
+	//TWeakObjectPtr<USkeletalMeshComponent> AnotherMesh = nullptr; <- BAD and not compiling
 	//	Generally, for storing pointers to classes you do own, use UPROPERTY() and initialise.
 	UPROPERTY(BlueprintReadOnly, Category = Mesh)
 	USkeletalMeshComponent* MyMesh = nullptr;
@@ -191,7 +191,7 @@ enum class ESDCodingStandardEnum // `: uint8` optional underlying type
 
 	// [cpp.enum.generated.count] Don't put a label to represent the number of values in the enum
 	// 	use EnumAutoGen::GetNumValues<ESDCodingStandardEnum>() instead.
-	Max /* <- BAD */
+	Max // <- BAD
 };
 
 UCLASS()
