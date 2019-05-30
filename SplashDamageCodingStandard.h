@@ -130,9 +130,9 @@ protected:
 	// 	next to the variable that used them to avoid cluttering the interface with these functions that
 	// 	are not called by client code.
 	UPROPERTY(Transient, ReplicatedUsing = "OnRep_WantsToSprint")
-		bool WantsToSprint = false;
+	bool WantsToSprint = false;
 	UFUNCTION()
-		void OnRep_WantsToSprint();
+	void OnRep_WantsToSprint();
 };
 
 // [ue.gen.struct] [ue.ecs.group] move groups of Blueprint exposed variables into separate structures
@@ -229,13 +229,13 @@ public:
 	// [cpp.rel_ops] when implementing relation operators, for consistency sake, use the binary free form
 	//	if it needs to access private members, make it `friend` and respect [class.inline.good]
 	// NOTE: add working functionality only for `==` and `<` everything else can be inferred from them
-	friend inline bool operator == (
+	friend bool operator == (
 		const USDCodingStandardExampleComponent& lhs,
 		const USDCodingStandardExampleComponent& rhs);
 
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-		FSDCodingStandardBlueprintVarGroup BlueprintGroup;
+	FSDCodingStandardBlueprintVarGroup BlueprintGroup;
 
 private:
 	// [class.constant] best way to define constants
