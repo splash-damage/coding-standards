@@ -215,8 +215,8 @@ public:
 	//	- they interfere/break with Hot Reload and plugins
 	//	- discuss alternatives with your lead
 	//	- if you somehow have to add one, first reconsider, then use the Meyers pattern: https://stackoverflow.com/a/1661564
-	/* BAD -> */ static USDCodingStandardExampleComponent& Instance; // defined in .cpp
-	/* VERY BAD -> */ USDCodingStandardExampleComponent& GetInstance() { return Instance; }
+	/* BAD -> */ static USDCodingStandardExampleComponent* Instance; // defined in .cpp
+	/* VERY BAD -> */ USDCodingStandardExampleComponent* GetInstance() { return Instance; }
 
 	// [ue.alloc] expose the allocation as a policy for new utility methods you write
 	//	this way the caller has a chance to decide how memory is utilized
