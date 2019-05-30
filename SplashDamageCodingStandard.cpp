@@ -55,10 +55,10 @@
 #include "UnrealNetwork.h"
 
 // [cpp.namespace.private] use a namespace to wrap translation-unit local free functions 
-//	defined only in cpp files. The namespace will enforce internal only linkage.
+// 	defined only in cpp files. Also mark them as static to enforce internal only linkage.
 namespace SDCodingStandardHelpers
 {
-	void PrivateHelper(const USDCodingStandardExampleComponent& Object)
+	static void PrivateHelper(const USDCodingStandardExampleComponent& Object)
 	{
 	}
 }
@@ -70,7 +70,7 @@ namespace SDCodingStandardHelpers
 void BraceStyle()
 {
 	// illustration purpose only - don't do this in live code (use bit sets instead of many bool's)
-	bool FailCondition = false, TrueCondition = true,
+	const bool FailCondition = false, TrueCondition = true,
 		SomethingElse = true, Contract = true, Binding = true;
 
 	if (FailCondition)
@@ -115,7 +115,7 @@ void BraceStyle()
 	}
 
 	// [cpp.if.init] use the if-with-initializer idiom
-	if (bool IsGame = FApp::IsGame())
+	if (const bool IsGame = FApp::IsGame())
 	{
 		// ... 
 	}
@@ -142,7 +142,7 @@ TOptional<FIntRect> IntersectTest(const FIntPoint& min, const FIntPoint& max)
 // [ue.gen.struct] if Blueprint variables are extracted in separate structures
 //	it is possible to pass them around, thus not having to expose all functions as
 //	methods in a class, thus leading to less coupling and faster compilation
-float DoPassBlueprintVarStructs(const FSDCodingStandardBlueprintVarGroup &vars)
+float DoPassBlueprintVarStructs(const FSDCodingStandardBlueprintVarGroup& vars)
 {
 	return vars.CameraTraceVolumeWidth / 2.f;
 }
