@@ -122,7 +122,7 @@ protected:
 	TWeakObjectPtr<const USkeletalMeshComponent> OtherMesh = nullptr;
 	//	Generally, for storing pointers to classes you do own, use UPROPERTY() and initialise.
 	UPROPERTY(BlueprintReadOnly, Category = Mesh)
-		const USkeletalMeshComponent* MyMesh = nullptr;
+	const USkeletalMeshComponent* MyMesh = nullptr;
 	//	For more information on other forms of UE4 smart pointers see
 	//	https://docs.unrealengine.com/latest/INT/Programming/UnrealArchitecture/SmartPointerLibrary/ 
 
