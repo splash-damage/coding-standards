@@ -80,15 +80,15 @@ void BraceStyle()
 
 	if (TrueCondition)
 	{
-		/* ... */
+		// ... 
 	}
 	else if (SomethingElse)
 	{
-		/* ... */
+		// ... 
 	}
 	else // !SomethingElse and !TrueCondition
 	{
-		/* ... */
+		// ... 
 	}
 
 	// for `switch` statements follow Unreal's guideline
@@ -117,7 +117,7 @@ void BraceStyle()
 	// [cpp.if.init] use the if-with-initializer idiom
 	if (bool IsGame = FApp::IsGame())
 	{
-		/* ... */
+		// ... 
 	}
 }
 
@@ -127,7 +127,7 @@ void BraceStyle()
 FIntPoint CachedCoordinates; // PASSABLE
 class MyBigObject
 {
-	/* ... */
+	// ... 
 };
 MyBigObject Cache1; // BAD
 MyBigObject Cache2; // BAD - maybe this is started first, not Cache1
@@ -136,7 +136,6 @@ MyBigObject Cache2; // BAD - maybe this is started first, not Cache1
 //	instead of using C style pass by reference
 TOptional<FIntRect> IntersectTest(const FIntPoint &min, const FIntPoint &max)
 {
-	/* ... */
 	return (min.X > max.X || min.Y > max.Y) ? TOptional<FIntRect>() : FIntRect(min, max);
 }
 
@@ -206,7 +205,7 @@ void EngineChanges()
 	if (true)
 	{
 // @SPLASH_DAMAGE_CHANGE: <author email> - BEGIN: <JIRA tag> <description>
-		/* ... */
+		// ... 
 // @SPLASH_DAMAGE_CHANGE: <author email> - END
 	}
 
@@ -220,7 +219,7 @@ void GameWithEditorChanges(TArray<int> Widgets)
 {
 // [markup.editor] isolate Editor specific changes in game code
 #if WITH_EDITOR
-	/* ... */
+	// ... 
 
 	// [assert.editor] never assert in Editor code - try to recover to your best effort!
 	check(Widgets.Num()); // <- BAD, will force-crash and potentially destroy work
