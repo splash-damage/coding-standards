@@ -31,16 +31,16 @@
 // @SPLASH_DAMAGE_FILE: <description>
 
 // [markup.engine.file] If this file is being added to an engine location, mark this
-// with the above comment at the start of the file. This removes the need for the
-// SPLASH_DAMAGE_CHANGE engine guards around modifications in the file (see [markup.engine])
+// 	with the above comment at the start of the file. This removes the need for the
+// 	SPLASH_DAMAGE_CHANGE engine guards around modifications in the file (see [markup.engine])
 
 // [basic.layout] try to limit horizontal space and use vertical layout
 //	there is a reason newspapers have columns ;)
 //	80 characters is a good guideline to strive for
 // --------------------------------------------- 80 char limit --------------->|
 // --------------------------------------------- 100 char limit ---------------------------------->|
-//  you can add an indicator with visual assist: 
-//  Visual Assist Options -> Display -> Display indicator after column n
+//  	you can add an indicator with visual assist: 
+//  	Visual Assist Options -> Display -> Display indicator after column n
 
 // [comment.type]
 //	always use the C++ style and not the C /**/ style
@@ -55,7 +55,7 @@
 #include "UnrealNetwork.h"
 
 // [cpp.namespace.private] use a namespace to wrap translation-unit local free functions 
-// defined only in cpp files. Also mark them as static to enforce internal only linkage.
+// 	defined only in cpp files. Also mark them as static to enforce internal only linkage.
 namespace SDCodingStandardHelpers
 {
 	static void PrivateHelper(const USDCodingStandardExampleComponent& Object)
@@ -80,15 +80,15 @@ void BraceStyle()
 
 	if (TrueCondition)
 	{
-		/* ... */
+		// ...
 	}
 	else if (SomethingElse)
 	{
-		/* ... */
+		// ...
 	}
 	else // !SomethingElse and !TrueCondition
 	{
-		/* ... */
+		// ...
 	}
 
 	// for `switch` statements follow Unreal's guideline
@@ -117,7 +117,7 @@ void BraceStyle()
 	// [cpp.if.init] use the if-with-initializer idiom
 	if (bool IsGame = FApp::IsGame())
 	{
-		/* ... */
+		// ...
 	}
 }
 
@@ -127,7 +127,7 @@ void BraceStyle()
 FIntPoint CachedCoordinates; // PASSABLE
 class MyBigObject
 {
-	/* ... */
+	// ...
 };
 MyBigObject Cache1; // BAD
 MyBigObject Cache2; // BAD - maybe this is started first, not Cache1
@@ -136,7 +136,7 @@ MyBigObject Cache2; // BAD - maybe this is started first, not Cache1
 //	instead of using C style pass by reference
 TOptional<FIntRect> IntersectTest(const FIntPoint &min, const FIntPoint &max)
 {
-	/* ... */
+	// ...
 	return (min.X > max.X || min.Y > max.Y) ? TOptional<FIntRect>() : FIntRect(min, max);
 }
 
@@ -206,7 +206,7 @@ void EngineChanges()
 	if (true)
 	{
 // @SPLASH_DAMAGE_CHANGE: <author email> - BEGIN: <JIRA tag> <description>
-		/* ... */
+		// ...
 // @SPLASH_DAMAGE_CHANGE: <author email> - END
 	}
 
@@ -220,11 +220,11 @@ void GameWithEditorChanges(TArray<int> Widgets)
 {
 // [markup.editor] isolate Editor specific changes in game code
 #if WITH_EDITOR
-	/* ... */
+	// ...
 
 	// [assert.editor] never assert in Editor code - try to recover to your best effort!
 	check(Widgets.Num()); // <- BAD, will force-crash and potentially destroy work
-	ensureMsgf(Widgets.Num(), TEXT("Must have widgets selected!")); // <- GOOD, doesn't force-crash
+	ensureMsgf(Widgets.Num(), TEXT("Must have widgets selected!")); // <- BETTER, doesn't force-crash
 #endif
 }
 
@@ -260,8 +260,8 @@ void AutoStyle()
 	//	self calling lambda technique (bonus: very useful for `const`)
 	const auto InitLevel = []()
 	{
-	// possible example of complicated logic
-	// that cannot be easily implemented with the ?: operator
+	// 	possible example of complicated logic
+	// 	that cannot be easily implemented with the ?: operator
 	//
 	//	if (auto CamMgr = (static_cast<ACameraManager *>(PC))->GetCameraManager())
 	//		return CamMgr->GetCurrentHeightLevel();
@@ -285,7 +285,7 @@ void NoAutoStyle()
 void NumericLimits()
 {
 	// [cpp.numericlimits] Use TNumericLimits instead of #defines such as FLT_MAX
-	// See http://api.unrealengine.com/INT/API/Runtime/Core/Math/TNumericLimits/
+	// 	See http://api.unrealengine.com/INT/API/Runtime/Core/Math/TNumericLimits/
 
 	// E.g. For all floating point types
 	float MaxPositiveFloatValue = TNumericLimits<float>::Max();
@@ -300,7 +300,7 @@ void NumericLimits()
 void ASDCodingStandardExampleActor::BeginPlay()
 {
 	// [ue.ecs.super] always call Super:: method for Actor/Component tickable overridden functions
-	// other regular methods don't necessary need to do this
+	// 	other regular methods don't necessary need to do this
 	Super::BeginPlay();
 }
 
@@ -362,15 +362,15 @@ void USDCodingStandardExampleComponent::LambdaStyle(AActor *ExternalEntity)
 static void EnumString()
 {
 	// [cpp.enum.generated.count] Don't put a label to represent the number of values in the enum
-	// use EnumAutoGen::GetNumValues<ESDCodingStandardEnum>() instead.
+	// 	use EnumAutoGen::GetNumValues<ESDCodingStandardEnum>() instead.
 	constexpr auto NumValues = EnumAutoGen::GetNumValues<ESDCodingStandardEnum>();
 
 	// [cpp.enum.generated] Use the GenerateStringFuncs parameter if you need string conversion or
-	// query the number of values. Don't write boilerplate code for this yourself
+	// 	query the number of values. Don't write boilerplate code for this yourself
 	constexpr auto * ValueAString = EnumAutoGen::GetEnumString(ESDCodingStandardEnum::ValueA);
 
 	// [cpp.enum.generated.foreach] Use ForEachPair, ForEachString, ForEachVal functions 
-	// if you need to do something for each enum value or string
+	// 	if you need to do something for each enum value or string
 	EnumAutoGen::ForEachPair<ESDCodingStandardEnum>(
 		[](ESDCodingStandardEnum Value, const TCHAR * String)
 	{
