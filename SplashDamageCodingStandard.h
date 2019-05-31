@@ -49,15 +49,15 @@
 #include "GameFramework/HUDHitBox.h"
 
 // [header.rule.path]
-// Use the shortest possible path for including files. Not doing so hides missing dependencies
-// between modules and can cause hard to track linker or compiler errors at a later date.
-//  - if the header is in a Public subfolder, you can just use the filename (e.g. "CoreMinimal.h").
-//  - if the header is in a Classes subfolder, you can use the relative path from Classes. (e.g. "GameFramework/Pawn.h")
+// 	Use the shortest possible path for including files. Not doing so hides missing dependencies
+// 	between modules and can cause hard to track linker or compiler errors at a later date.
+//  	- if the header is in a Public subfolder, you can just use the filename (e.g. "CoreMinimal.h").
+//  	- if the header is in a Classes subfolder, you can use the relative path from Classes. (e.g. "GameFramework/Pawn.h")
 
 // [header.rule.privatepath]
-// Never include private paths in a public header file. This can cause hard to track linker
-// or compiler errors at a later date. Either re-factor your code so that you can use a forward
-// declare or, if necessary, make the file you are trying to include public.
+// 	Never include private paths in a public header file. This can cause hard to track linker
+// 	or compiler errors at a later date. Either re-factor your code so that you can use a forward
+// 	declare or, if necessary, make the file you are trying to include public.
 
 // [header.rule.gen] always have the .generated files last
 #include "SplashDamageCodingStandard.generated.h"
@@ -81,7 +81,7 @@ class ASDCodingStandardExampleActor : public ACharacter
 public:
 
 	// [class.ctor.default] don't write an empty one, remove it
-	// due to the way GENERATED_BODY works, `= default`-ing the constructor can lead to crashes
+	// 	due to the way GENERATED_BODY works, `= default`-ing the constructor can lead to crashes
 
 	// [class.dtor] don't write empty one, default or remove it
 	//	respect the rule of 3/5/0 http://en.cppreference.com/w/cpp/language/rule_of_three
@@ -89,8 +89,8 @@ public:
 
 	// [class.virtual] explicitly mark up virtual methods
 	//	- always use the `override` specifier
-	//  - use the `final` specifier sparingly and with care as it can have large ramifications on downstream classes.
-	//  - group overridden functions by the class that first defined, them using begin/end comments (as below)
+	//  	- use the `final` specifier sparingly and with care as it can have large ramifications on downstream classes.
+	//  	- group overridden functions by the class that first defined, them using begin/end comments (as below)
 
 	// Begin AActor override
 	virtual void BeginPlay() override;
@@ -104,7 +104,7 @@ public:
 	//	- definitions(bodies) inside a class/struct are implicitly inline!
 	// [comment.useless] DON'T write meaningless comments!
 	//	they should always reflect bigger purpose or reveal hidden details
-	/** Returns Mesh subobject **/
+	// Returns Mesh subobject
 	/* BAD -> */ FORCEINLINE USkeletalMeshComponent* GetMesh() const { return MyMesh; } /* <- BAD */
 
 	// [class.inline.good] Move the definitions of inline function outside the class
@@ -112,7 +112,7 @@ public:
 
 protected:
 	// [class.order] Do not alternate between functions and variables in the class declaration
-	// Put all functions first, all variables last
+	// 	Put all functions first, all variables last
 
 	// [ue.ecs.split] Split functionality into components
 	//	avoid creating monolithic giant classes!
@@ -121,8 +121,8 @@ protected:
 	// [ue.ecs.gc] never use naked pointers to UObject's, always have UPROPERTY or UE smart ptr
 	//	Generally, for storing pointers to classes you don't own, use TWeakObjectPtr.
 	//	Don't initialise TWeakObjectPtr as it will force you to include the header file for the container class.
-	TWeakObjectPtr<USkeletalMeshComponent> OtherMesh; /* <- GOOD */
-	//TWeakObjectPtr<USkeletalMeshComponent> AnotherMesh = nullptr; /* <- BAD and not compiling */
+	TWeakObjectPtr<USkeletalMeshComponent> OtherMesh; // <- GOOD
+	//TWeakObjectPtr<USkeletalMeshComponent> AnotherMesh = nullptr; // <- BAD and not compiling
 	//	Generally, for storing pointers to classes you do own, use UPROPERTY() and initialise.
 	UPROPERTY(BlueprintReadOnly, Category = Mesh)
 	USkeletalMeshComponent* MyMesh = nullptr;
@@ -130,8 +130,8 @@ protected:
 	//	https://docs.unrealengine.com/latest/INT/Programming/UnrealArchitecture/SmartPointerLibrary/ 
 
 	// [class.order.replication] As an exception to [class.ordering], declare replication functions
-	// next to the variable that used them to avoid cluttering the interface with these functions that
-	// are not called by client code.
+	// 	next to the variable that used them to avoid cluttering the interface with these functions that
+	// 	are not called by client code.
 	UPROPERTY(Transient, ReplicatedUsing = "OnRep_WantsToSprint")
 	bool WantsToSprint = false;
 	UFUNCTION()
@@ -161,10 +161,10 @@ struct FSDCodingStandardBlueprintVarGroup
 	float CameraTraceVolumeWidth = 96.0f * 5;
 
 	// [class.member.config] member variables that are used as editor config variables
-	//  MUST have a comment supplied as it shows up as the tooltip in the Editor.
-	//  They should also be marked as EditDefaultsOnly by default.
-	//  If you expect them to be read in blueprints then use BlueprintReadOnly.
-	//  Only use EditAnywhere, EditInstanceOnly or BlueprintReadWrite if it's necessary for your use case.
+	//  	MUST have a comment supplied as it shows up as the tooltip in the Editor.
+	//  	They should also be marked as EditDefaultsOnly by default.
+	//  	If you expect them to be read in blueprints then use BlueprintReadOnly.
+	//  	Only use EditAnywhere, EditInstanceOnly or BlueprintReadWrite if it's necessary for your use case.
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Camera)
 	float CameraTraceVolumeHeight = 96.0f * 5;
 
@@ -181,7 +181,7 @@ struct FSDCodingStandardBlueprintVarGroup
 
 // [cpp.enum.strong] use the strongly typed enums rather than old C style + dirty namespace tricks
 // [cpp.enum.generated] Use the GenerateStringFuncs parameter if you need string conversion or
-// query the number of values. Don't write boilerplate code for this yourself
+// 	query the number of values. Don't write boilerplate code for this yourself
 UENUM(GenerateStringFuncs)
 enum class ESDCodingStandardEnum // `: uint8` optional underlying type 
 {
@@ -190,8 +190,8 @@ enum class ESDCodingStandardEnum // `: uint8` optional underlying type
 	ValueC,
 
 	// [cpp.enum.generated.count] Don't put a label to represent the number of values in the enum
-	// use EnumAutoGen::GetNumValues<ESDCodingStandardEnum>() instead.
-	Max /* <- BAD */
+	// 	use EnumAutoGen::GetNumValues<ESDCodingStandardEnum>() instead.
+	Max // <- BAD
 };
 
 UCLASS()
@@ -284,7 +284,7 @@ inline bool operator == (
 }
 
 // [cpp.namepace.public] Use a namespace to contain free functions.
-// This helps manage potential name clashes and unity build issues.
+// 	This helps manage potential name clashes and unity build issues.
 namespace SDCodingStandardHelpers
 {
 	void PublicHelper(const USDCodingStandardExampleComponent& Object);
@@ -308,10 +308,10 @@ namespace SDCodingStandardHelpers
 //	- Classes, Struct & Enums in Game modules should be prefixed with SD
 
 // [module.naming.namespace]
-// - Namespaces in Core modules should be prefixed with SDC
-// - Namespaces in Game modules should be prefixed with SD
-// - Namespaces should be named the same as the file they live in
-// - Namespaces may be postfixed with "Helpers" where it prevents ambiguity
+// 	- Namespaces in Core modules should be prefixed with SDC
+// 	- Namespaces in Game modules should be prefixed with SD
+// 	- Namespaces should be named the same as the file they live in
+// 	- Namespaces may be postfixed with "Helpers" where it prevents ambiguity
 
 // [module.dependency] modules should follow strict dependency rules
 //	- Interface modules should only include engine modules.
