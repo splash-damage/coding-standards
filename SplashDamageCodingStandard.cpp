@@ -70,7 +70,7 @@ namespace SDCodingStandardHelpers
 void BraceStyle()
 {
 	// illustration purpose only - don't do this in live code (use bit sets instead of many bool's)
-	bool FailCondition = false, TrueCondition = true,
+	const bool FailCondition = false, TrueCondition = true,
 		SomethingElse = true, Contract = true, Binding = true;
 
 	if (FailCondition)
@@ -115,7 +115,7 @@ void BraceStyle()
 	}
 
 	// [cpp.if.init] use the if-with-initializer idiom
-	if (bool IsGame = FApp::IsGame())
+	if (const bool IsGame = FApp::IsGame())
 	{
 		// ...
 	}
@@ -148,11 +148,11 @@ float DoPassBlueprintVarStructs(const FSDCodingStandardBlueprintVarGroup &vars)
 	return vars.CameraTraceVolumeWidth / 2.f;
 }
 
-void DontWasteMemory(AActor *Actor)
+void DontWasteMemory(const AActor *Actor)
 {
 	// [ue.container] Mind your allocations!
 	//	don't go to the heap, go to the stack!
-	TInlineComponentArray<UPrimitiveComponent*> PrimComponents; // 24 item reserved by default
+	TInlineComponentArray<const UPrimitiveComponent*> PrimComponents; // 24 item reserved by default
 	Actor->GetComponents(PrimComponents);
 	
 	// [ue.container] [ue.ecs.get] Customize the get-ers for this purpose!
@@ -216,7 +216,7 @@ void EngineChanges()
 	//	 i.e. commenting out the section vs actually removing it
 }
 
-void GameWithEditorChanges(TArray<int> Widgets)
+void GameWithEditorChanges(const TArray<int>& Widgets)
 {
 // [markup.editor] isolate Editor specific changes in game code
 #if WITH_EDITOR
@@ -235,11 +235,11 @@ void AutoStyle()
 {
 	// [cpp.auto.init] auto forces to have initialization - this is always good
 	auto Int = 42; // an int, if explicitly declared it would have garbage default value
-	auto MoreStuff = 42u; // this is unsigned int;
-	auto EvenMore = 42.f; // float
-	auto Precision = 42.0; // double
-	auto Condition = false; // boolean
-	auto Big = 42ll; // long long
+	const auto MoreStuff = 42u; // this is unsigned int;
+	const auto EvenMore = 42.f; // float
+	const auto Precision = 42.0; // double
+	const auto Condition = false; // boolean
+	const auto Big = 42ll; // long long
 
 	int *PtrInt = &Int;
 	int &RefInt = Int;
@@ -254,7 +254,7 @@ void AutoStyle()
 	auto &enforce_ref = RefInt;
 	auto hidden_ptr = &Int; // <- BAD even if it still works
 	auto *explicit_ptr = PtrInt;
-	const auto &explicit_ref = RefInt;
+	auto &explicit_ref = RefInt;
 
 	// [cpp.auto.init.lbmd] a generalization of the always-initialized is the
 	//	self calling lambda technique (bonus: very useful for `const`)
@@ -288,13 +288,13 @@ void NumericLimits()
 	// 	See http://api.unrealengine.com/INT/API/Runtime/Core/Math/TNumericLimits/
 
 	// E.g. For all floating point types
-	float MaxPositiveFloatValue = TNumericLimits<float>::Max();
-	float MinPositiveFloatValue = TNumericLimits<float>::Min();
-	float MinNegativeFloatValue = TNumericLimits<float>::Lowest();
+	const float MaxPositiveFloatValue = TNumericLimits<float>::Max();
+	const float MinPositiveFloatValue = TNumericLimits<float>::Min();
+	const float MinNegativeFloatValue = TNumericLimits<float>::Lowest();
 
 	// E.g. For integral types
-	int32 MaxPositiveIntValue = TNumericLimits<int32>::Max();
-	int32 MinNegativeIntValue = TNumericLimits<int32>::Min(); // This is the same as Lowest() for all integral types.
+	const int32 MaxPositiveIntValue = TNumericLimits<int32>::Max();
+	const int32 MinNegativeIntValue = TNumericLimits<int32>::Min(); // This is the same as Lowest() for all integral types.
 }
 
 void ASDCodingStandardExampleActor::BeginPlay()
@@ -315,7 +315,7 @@ void ASDCodingStandardExampleActor::OnRep_WantsToSprint()
 {
 }
 
-void USDCodingStandardExampleComponent::LambdaStyle(AActor *ExternalEntity)
+void USDCodingStandardExampleComponent::LambdaStyle(const AActor *ExternalEntity)
 {
 	// [cpp.lambda.general] use lambda's to your advantage
 	//	especially when they will isolate work in the implementation

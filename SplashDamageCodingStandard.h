@@ -105,10 +105,10 @@ public:
 	// [comment.useless] DON'T write meaningless comments!
 	//	they should always reflect bigger purpose or reveal hidden details
 	// Returns Mesh subobject
-	/* BAD -> */ FORCEINLINE USkeletalMeshComponent* GetMesh() const { return MyMesh; } /* <- BAD */
+	/* BAD -> */ FORCEINLINE const USkeletalMeshComponent* GetMesh() const { return MyMesh; } /* <- BAD */
 
 	// [class.inline.good] Move the definitions of inline function outside the class
-	TWeakObjectPtr<USkeletalMeshComponent> GoodExampleOfInline();
+	TWeakObjectPtr<const USkeletalMeshComponent> GoodExampleOfInline() const;
 
 protected:
 	// [class.order] Do not alternate between functions and variables in the class declaration
@@ -121,11 +121,11 @@ protected:
 	// [ue.ecs.gc] never use naked pointers to UObject's, always have UPROPERTY or UE smart ptr
 	//	Generally, for storing pointers to classes you don't own, use TWeakObjectPtr.
 	//	Don't initialise TWeakObjectPtr as it will force you to include the header file for the container class.
-	TWeakObjectPtr<USkeletalMeshComponent> OtherMesh; // <- GOOD
+	TWeakObjectPtr<const USkeletalMeshComponent> OtherMesh; // <- GOOD
 	//TWeakObjectPtr<USkeletalMeshComponent> AnotherMesh = nullptr; // <- BAD and not compiling
 	//	Generally, for storing pointers to classes you do own, use UPROPERTY() and initialise.
 	UPROPERTY(BlueprintReadOnly, Category = Mesh)
-	USkeletalMeshComponent* MyMesh = nullptr;
+	const USkeletalMeshComponent* MyMesh = nullptr;
 	//	For more information on other forms of UE4 smart pointers see
 	//	https://docs.unrealengine.com/latest/INT/Programming/UnrealArchitecture/SmartPointerLibrary/ 
 
@@ -201,18 +201,18 @@ class USDCodingStandardExampleComponent : public USceneComponent
 
 public:
 	// [func.arg.readability] avoid `bool` function arguments, especially successions of them	
-	/* BAD -> */ void FuncHardToReadOnCall(int Order, bool bSetCache, bool bUseLog); /* <- BAD */
+	/* BAD -> */ void FuncHardToReadOnCall(int Order, bool bSetCache, bool bUseLog) const; /* <- BAD */
 	using TOrder = int;
 	enum class ECacheFlags { Use, Disabled, Unspecified };
 	enum class ELogging { Yes, No };
-	/* GOOD -> */ void FuncNiceToReadOnCall(TOrder, ECacheFlags, ELogging);
+	/* GOOD -> */ void FuncNiceToReadOnCall(TOrder, ECacheFlags, ELogging) const;
 	//	argument names in declarations are ignored, try to encode as much meaning as possible in the type
 	//	also even this simple typedef/using goes a long way readability wise at the call site:
 	//	ex: FuncNiceToReadOnCall(FOrder(42), FCacheFlags::Use, FLogFlags::Custom, FLoadOnPlay(false));
 
 	// [func.arg.readability] avoid consecutive chains of same type, avoid too many arguments
-	/* BAD -> */ void FuncWithTooManyArgs(FVector Location, FVector Origin, FVector EndPoint,
-		FRotator Rotation, UPrimitiveComponent *Parent, AActor *Owner, float Damage, float Radius); /* <- BAD */
+	/* BAD -> */ void FuncWithTooManyArgs(const FVector& Location, const FVector& Origin, const FVector& EndPoint,
+		const FRotator& Rotation, const UPrimitiveComponent *Parent, const AActor *Owner); /* <- BAD */
 	// try to add a helper structure, or maybe you can split in more functions that are less complex each
 
 	// [singleton.no] NEVER USE SINGLETONS!!!
@@ -221,15 +221,15 @@ public:
 	//	- discuss alternatives with your lead
 	//	- if you somehow have to add one, first reconsider, then use the Meyers pattern: https://stackoverflow.com/a/1661564
 	/* BAD -> */ static USDCodingStandardExampleComponent* Instance; // defined in .cpp
-	/* VERY BAD -> */ USDCodingStandardExampleComponent* GetInstance() { return Instance; }
+	/* VERY BAD -> */ const USDCodingStandardExampleComponent* GetInstance() const { return Instance; }
 
 	// [ue.alloc] expose the allocation as a policy for new utility methods you write
 	//	this way the caller has a chance to decide how memory is utilized
 	template<class AllocatorType>
-	void GetComponents(TArray<UActorComponent *, AllocatorType>& OutComponents);
+	void GetComponents(TArray<const UActorComponent *, AllocatorType>& OutComponents) const;
 
 	// [cpp.lambda] used later for guidelines
-	void LambdaStyle(AActor *ExternalEntity);
+	void LambdaStyle(const AActor *ExternalEntity);
 
 	// [cpp.rel_ops] when implementing relation operators, use the binary free form
 	//	as it provides the most flexibility with operands order and usage
@@ -267,7 +267,7 @@ private:
 //		this simple function would have been inlined anyway
 //	- having it like this also helps refactoring
 //		you can easily move this to the .cpp without messing up the class definition
-inline TWeakObjectPtr<USkeletalMeshComponent> ASDCodingStandardExampleActor::GoodExampleOfInline()
+inline TWeakObjectPtr<const USkeletalMeshComponent> ASDCodingStandardExampleActor::GoodExampleOfInline() const
 {
 	return OtherMesh;
 }
