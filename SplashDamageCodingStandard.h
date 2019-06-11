@@ -201,14 +201,12 @@ class USDCodingStandardExampleComponent : public USceneComponent
 
 public:
 	// [func.arg.readability] avoid `bool` function arguments, especially successions of them	
-	/* BAD -> */ void FuncHardToReadOnCall(int Order, bool bSetCache, bool bUseLog); /* <- BAD */
-	using TOrder = int;
+	/* BAD -> */ void FuncHardToReadOnCall(bool bSetCache, bool bUseLog); /* <- BAD */
 	enum class ECacheFlags { Use, Disabled, Unspecified };
 	enum class ELogging { Yes, No };
-	/* GOOD -> */ void FuncNiceToReadOnCall(TOrder, ECacheFlags, ELogging);
+	/* GOOD -> */ void FuncNiceToReadOnCall(ECacheFlags, ELogging);
 	//	argument names in declarations are ignored, try to encode as much meaning as possible in the type
-	//	also even this simple typedef/using goes a long way readability wise at the call site:
-	//	ex: FuncNiceToReadOnCall(FOrder(42), FCacheFlags::Use, FLogFlags::Custom, FLoadOnPlay(false));
+	//	ex: FuncNiceToReadOnCall(FCacheFlags::Use, FLogFlags::Custom);
 
 	// [func.arg.readability] avoid consecutive chains of same type, avoid too many arguments
 	/* BAD -> */ void FuncWithTooManyArgs(FVector Location, FVector Origin, FVector EndPoint,
