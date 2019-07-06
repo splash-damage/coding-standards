@@ -184,8 +184,8 @@ struct FSDCodingStandardBlueprintVarGroup
 
 // [cpp.enum.strong] use the strongly typed enums rather than old C style + dirty namespace tricks
 // [cpp.enum.generated] Use the GenerateStringFuncs parameter if you need string conversion or
-// 	query the number of values. Don't write boilerplate code for this yourself
-UENUM(GenerateStringFuncs)
+// 	query the number of values. NOTE: only available on certain projects 
+//UENUM(GenerateStringFuncs)
 enum class ESDCodingStandardEnum // `: uint8` optional underlying type 
 {
 	ValueA,

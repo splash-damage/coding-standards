@@ -368,6 +368,7 @@ void USDCodingStandardExampleComponent::LambdaStyle(AActor *ExternalEntity)
 	};
 }
 
+#ifdef PROJECT_HAS_ENUMAUTOGEN
 static void EnumString()
 {
 	// [cpp.enum.generated.count] Don't put a label to represent the number of values in the enum
@@ -386,6 +387,7 @@ static void EnumString()
 		// Do something
 	});
 }
+#endif
 
 void SDCodingStandardHelpers::PublicHelper(const USDCodingStandardExampleComponent& Object)
 {
