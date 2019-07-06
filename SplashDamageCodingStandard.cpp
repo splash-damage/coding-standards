@@ -49,10 +49,19 @@
 //		Edit -> Advanced -> Un/Comment Selection
 //		Ctrl+K Ctrl+C / Ctrl+K Ctrl+U
 
-// [header.iwuu] always include the equivalent .h file first
-#include "SplashDamageCodingStandard.h"
-#include "Components/PrimitiveComponent.h"
-#include "UnrealNetwork.h"
+// [header.incl.order.cpp]
+// Generally speaking the include order of files in .cpp's should be
+#include "SplashDamageCodingStandard.h"			// 1) the equivalent header file
+
+#include <Components/PrimitiveComponent.h>		// 2) Engine files
+#include <UnrealNetwork.h>
+
+//#include <SDWidget.h>							// 3) SD Core files
+
+//#include "Features/Awesome/Foo.h"				// 4) Shared or Feature files
+//#include "Shared/Types.h"
+
+//#include "ViewModel.h"						// 5) Local files
 
 // [cpp.namespace.private] use a namespace to wrap translation-unit local free functions 
 // 	defined only in cpp files. Also mark them as static to enforce internal only linkage.

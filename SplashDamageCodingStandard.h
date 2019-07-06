@@ -39,27 +39,30 @@
 //	aka public variables, functions, names etc
 
 // [header.iwyu] we shall use IWYU https://docs.unrealengine.com/latest/INT/Programming/UnrealBuildSystem/IWYUReferenceGuide/index.html
-#include "CoreMinimal.h"
+#include <CoreMinimal.h>
 
-// [header.rule.incl] list all the dependencies
-#include "GameFramework/Character.h"
-#include "GameFramework/Pawn.h"
-//	group and separate them by shared logic/purpose
-#include "GameFramework/HUD.h"
-#include "GameFramework/HUDHitBox.h"
+// [header.engine.incl] list all the Engine dependencies with angle brackets includes
+#include <GameFramework/Character.h>
+#include <GameFramework/Pawn.h>
+//	group and separate them by shared logic or purpose
+//	use full relative path (in relation to Engine/Classes folders)
+#include <GameFramework/HUD.h>
+#include <GameFramework/HUDHitBox.h>
 
-// [header.rule.path]
-// 	Use the shortest possible path for including files. Not doing so hides missing dependencies
-// 	between modules and can cause hard to track linker or compiler errors at a later date.
-//  	- if the header is in a Public subfolder, you can just use the filename (e.g. "CoreMinimal.h").
-//  	- if the header is in a Classes subfolder, you can use the relative path from Classes. (e.g. "GameFramework/Pawn.h")
+// [header.incl.order]
+// Generally speaking the include order of files should be:
+//	1) CoreMinimal
+//	2) Other Engine files
+//	3) SD Core files
+//	4) local includes - with "" style
+//	5) this file .generate.h - with "" style
 
-// [header.rule.privatepath]
-// 	Never include private paths in a public header file. This can cause hard to track linker
-// 	or compiler errors at a later date. Either re-factor your code so that you can use a forward
-// 	declare or, if necessary, make the file you are trying to include public.
+// [header.incl.privatepath]
+// Never include private paths in a public header file. This can cause hard to track linker
+// or compiler errors at a later date. Either re-factor your code so that you can use a forward
+// declare or, if necessary, make the file you are trying to include public.
 
-// [header.rule.gen] always have the .generated files last
+// [header.incl.gen] always have the .generated files last
 #include "SplashDamageCodingStandard.generated.h"
 
 // [header.rule.fwd] list as many forward declaration as you can
