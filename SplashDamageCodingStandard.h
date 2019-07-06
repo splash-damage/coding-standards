@@ -238,7 +238,7 @@ public:
 	//	as it provides the most flexibility with operands order and usage
 	//	if it needs to access private members, make it `friend` and respect [class.inline.good]
 	// NOTE: add working functionality only for `==` and `<` everything else can be inferred from them
-	friend inline bool operator == (
+	friend bool operator == (
 		const USDCodingStandardExampleComponent &lhs,
 		const USDCodingStandardExampleComponent &rhs);
 
