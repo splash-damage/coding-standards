@@ -232,7 +232,7 @@ public:
 	void GetComponents(TArray<const UActorComponent*, AllocatorType>& OutComponents) const;
 
 	// [cpp.lambda] used later for guidelines
-	void LambdaStyle(const AActor& ExternalEntity) const;
+	void LambdaStyle(const AActor* ExternalEntity) const;
 
 	// [cpp.rel_ops] when implementing relation operators, use the binary free form
 	//  as it provides the most flexibility with operands order and usage

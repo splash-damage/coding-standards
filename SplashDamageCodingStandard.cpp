@@ -324,7 +324,7 @@ void ASDCodingStandardExampleActor::OnRep_WantsToSprint()
 {
 }
 
-void USDCodingStandardExampleComponent::LambdaStyle(const AActor& ExternalEntity) const
+void USDCodingStandardExampleComponent::LambdaStyle(const AActor* ExternalEntity) const
 {
 	// [cpp.lambda.general] use lambda's to your advantage
 	//  especially when they will isolate work in the implementation
