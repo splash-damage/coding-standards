@@ -94,10 +94,11 @@ public:
 	//	- always use the `override` specifier
 	//  	- use the `final` specifier sparingly and with care as it can have large ramifications on downstream classes.
 	//  	- group overridden functions by the class that first defined, them using begin/end comments (as below)
+	//		- per C++ core guidelines c.128: Virtual functions should specify exactly one of virtual, override, or final
 
 	// Begin AActor override
-	virtual void BeginPlay() override;
-	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	void BeginPlay() override;
+	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	// End AActor override
 
 	// [class.same-line] DON'T write definitions on the same line as declarations!
