@@ -35,22 +35,22 @@
 // 	SPLASH_DAMAGE_CHANGE engine guards around modifications in the file (see [markup.engine])
 
 // [basic.layout] try to limit horizontal space and use vertical layout
-//	there is a reason newspapers have columns ;)
-//	80 characters is a good guideline to strive for
+//  there is a reason newspapers have columns ;)
+//  80 characters is a good guideline to strive for
 // --------------------------------------------- 80 char limit --------------->|
 // --------------------------------------------- 100 char limit ---------------------------------->|
-//  	you can add an indicator with visual assist: 
-//  	Visual Assist Options -> Display -> Display indicator after column n
+//  you can add an indicator with visual assist: 
+//  Visual Assist Options -> Display -> Display indicator after column n
 
 // [comment.type]
-//	always use the C++ style and not the C /**/ style
-//	because it shows up in searches
-//	Visual Studio shortcut to toggle comments on a block:
-//		Edit -> Advanced -> Un/Comment Selection
-//		Ctrl+K Ctrl+C / Ctrl+K Ctrl+U
+//  always use the C++ style and not the C /**/ style
+//  because it shows up in searches
+//  Visual Studio shortcut to toggle comments on a block:
+//      Edit -> Advanced -> Un/Comment Selection
+//      Ctrl+K Ctrl+C / Ctrl+K Ctrl+U
 
 // [header.incl.order.cpp]
-// Generally speaking the include order of files in .cpp's should be
+//  Generally speaking the include order of files in .cpp's should be
 #include "SplashDamageCodingStandard.h"			// 1) the equivalent header file
 
 #include <Components/PrimitiveComponent.h>		// 2) Engine files
@@ -64,7 +64,7 @@
 //#include "ViewModel.h"						// 5) Local files
 
 // [cpp.namespace.private] use a namespace to wrap translation-unit local free functions 
-// 	defined only in cpp files. Also mark them as static to enforce internal only linkage.
+//  defined only in cpp files. Also mark them as static to enforce internal only linkage.
 namespace SDCodingStandardHelpers
 {
 	static void PrivateHelper(const USDCodingStandardExampleComponent& Object)
@@ -73,13 +73,13 @@ namespace SDCodingStandardHelpers
 }
 
 // [basic.order] respect the order of declarations in the .h header
-//	when you write the definitions here
+//  when you write the definitions here
 
 // [basic.rule.brace] FOLLOW UE4 coding style i.e. Allman style aka one every line
 void BraceStyle()
 {
 	// illustration purpose only - don't do this in live code (use bit sets instead of many bool's)
-	bool FailCondition = false, TrueCondition = true,
+	const bool FailCondition = false, TrueCondition = true,
 		SomethingElse = true, Contract = true, Binding = true;
 
 	if (FailCondition)
@@ -109,8 +109,8 @@ void BraceStyle()
 	}
 	
 	// [cpp.return.early] use early returns to avoid excessive nesting
-	//	especially for pre-conditions / contracts
-	//	one exception is logic flow where too many early returns would hurt readability
+	//  especially for pre-conditions / contracts
+	//  one exception is logic flow where too many early returns would hurt readability
 	if (!Contract && !Binding)
 	{
 		return;
@@ -124,15 +124,15 @@ void BraceStyle()
 	}
 
 	// [cpp.if.init] use the if-with-initializer idiom
-	if (bool IsGame = FApp::IsGame())
+	if (const bool IsGame = FApp::IsGame())
 	{
 		// ...
 	}
 }
 
 // [globals.no] avoid globals unless they're POD (plain-old-data)
-//	they don't play well with Hot Reload and their order of initialization
-//	is undefined. Epic loves them but we don't!
+//  they don't play well with Hot Reload and their order of initialization
+//  is undefined. Epic loves them but we don't!
 FIntPoint CachedCoordinates; // PASSABLE
 class MyBigObject
 {
@@ -142,35 +142,35 @@ MyBigObject Cache1; // BAD
 MyBigObject Cache2; // BAD - maybe this is started first, not Cache1
 
 // [cpp.return] consider using TOptional for returns that can fail
-//	instead of using C style pass by reference
-TOptional<FIntRect> IntersectTest(const FIntPoint &min, const FIntPoint &max)
+//  instead of using C style pass by reference
+TOptional<FIntRect> IntersectTest(const FIntPoint& min, const FIntPoint& max)
 {
 	// ...
 	return (min.X > max.X || min.Y > max.Y) ? TOptional<FIntRect>() : FIntRect(min, max);
 }
 
 // [ue.gen.struct] if Blueprint variables are extracted in separate structures
-//	it is possible to pass them around, thus not having to expose all functions as
-//	methods in a class, thus leading to less coupling and faster compilation
-float DoPassBlueprintVarStructs(const FSDCodingStandardBlueprintVarGroup &vars)
+//  it is possible to pass them around, thus not having to expose all functions as
+//  methods in a class, thus leading to less coupling and faster compilation
+float DoPassBlueprintVarStructs(const FSDCodingStandardBlueprintVarGroup& vars)
 {
 	return vars.CameraTraceVolumeWidth / 2.f;
 }
 
-void DontWasteMemory(AActor *Actor)
+void DontWasteMemory(const AActor& Actor)
 {
 	// [ue.container] Mind your allocations!
-	//	don't go to the heap, go to the stack!
+	//  don't go to the heap, go to the stack!
 	TInlineComponentArray<UPrimitiveComponent*> PrimComponents; // 24 item reserved by default
-	Actor->GetComponents(PrimComponents);
+	Actor.GetComponents(PrimComponents);
 	
 	// [ue.container] [ue.ecs.get] Customize the get-ers for this purpose!
 	using TCustomAlloc = TInlineAllocator<32>;
 	TArray<UActorComponent *, TCustomAlloc> LocalItems;
-	Actor->GetComponents<UActorComponent, TCustomAlloc>(LocalItems);
+	Actor.GetComponents<UActorComponent, TCustomAlloc>(LocalItems);
 	
 	// [ue.container.reserve] Prepare upfront the containers
-	//	cut down on the need to allocate per-item
+	//  cut down on the need to allocate per-item
 	PrimComponents.Reserve(64);
 	PrimComponents.Init(nullptr, 64);
 	
@@ -181,32 +181,32 @@ void DontWasteMemory(AActor *Actor)
 
 	// [hardware.cache] be mindful of cache access and plan your memory access accordingly
 	//
-	//	1 CPU cycle
-	//	o
+	//  1 CPU cycle
+	//  o
 	//
-	//	L1 cache access
-	//	ooo
+	//  L1 cache access
+	//  ooo
 	//
-	//	L2 cache access
-	//	ooooooooo
+	//  L2 cache access
+	//  ooooooooo
 	//
-	//	L3 cache access
-	//	oooooooooooooooooooooooooooooooooooooooooo
+	//  L3 cache access
+	//  oooooooooooooooooooooooooooooooooooooooooo
 	//
-	//	Main memory access
-	//	ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
-	//	ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
-	//	ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
-	//	ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+	//  Main memory access
+	//  ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+	//  ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+	//  ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+	//  ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
 	//
-	//	from https://twitter.com/srigi/status/917998817051541504
+	//  from https://twitter.com/srigi/status/917998817051541504
 	//
-	//	Some general tips
-	//	- prefer linear data structures, don't jump via pointers too much etc
-	//	- all cache access is through lines 64 bytes long, have that in mind!
-	//	- in classes put related data together, group them by algorithm/logic access
-	//	- be mindful of the invisible packing the compiler will do behind your back
-	//		don't intermingle bool's or small types willy nilly with bigger ones etc
+	//  Some general tips
+	//  - prefer linear data structures, don't jump via pointers too much etc
+	//  - all cache access is through lines 64 bytes long, have that in mind!
+	//  - in classes put related data together, group them by algorithm/logic access
+	//  - be mindful of the invisible packing the compiler will do behind your back
+	//      don't intermingle bool's or small types willy nilly with bigger ones etc
 }
 
 // [markup.engine] Use special markers for engine changes
@@ -225,7 +225,7 @@ void EngineChanges()
 	//	 i.e. commenting out the section vs actually removing it
 }
 
-void GameWithEditorChanges(TArray<int> Widgets)
+void GameWithEditorChanges(const TArray<int>& Widgets)
 {
 // [markup.editor] isolate Editor specific changes in game code
 #if WITH_EDITOR
@@ -238,8 +238,8 @@ void GameWithEditorChanges(TArray<int> Widgets)
 }
 
 // [cpp.auto] use `auto` or not at your discretion but BE CONSISTENT
-//	- if a part of code already has an auto style, follow it, don't mix
-//	- don't bikeshed over the merits of each style, pick one and stick with it
+//  - if a part of code already has an auto style, follow it, don't mix
+//  - don't bikeshed over the merits of each style, pick one and stick with it
 void AutoStyle()
 {
 	// [cpp.auto.init] auto forces to have initialization - this is always good
@@ -258,7 +258,7 @@ void AutoStyle()
 	auto still_bad = static_cast<const int>(Int); // <- BAD: type is still `int`
 
 	// [cpp.auto.golden-rule] ALWAYS mark auto with the appropriate qualifiers:
-	//	const, &, * - even if it's superfluous
+	//  const, &, * - even if it's superfluous
 	auto &proper_ref = Int;
 	auto &enforce_ref = RefInt;
 	auto hidden_ptr = &Int; // <- BAD even if it still works
@@ -266,20 +266,20 @@ void AutoStyle()
 	const auto &explicit_ref = RefInt;
 
 	// [cpp.auto.init.lbmd] a generalization of the always-initialized is the
-	//	self calling lambda technique (bonus: very useful for `const`)
+	//  self calling lambda technique (bonus: very useful for `const`)
 	const auto InitLevel = []()
 	{
-	// 	possible example of complicated logic
+	//  possible example of complicated logic
 	// 	that cannot be easily implemented with the ?: operator
 	//
-	//	if (auto CamMgr = (static_cast<ACameraManager *>(PC))->GetCameraManager())
-	//		return CamMgr->GetCurrentHeightLevel();
-	//	else
+	//  if (auto CamMgr = (static_cast<ACameraManager *>(PC))->GetCameraManager())
+	//      return CamMgr->GetCurrentHeightLevel();
+	//  else
 			return 0;
 	}(); // <- called here immediately, so guaranteed to get a default value
 
 	// [cpp.auto.fwd] Don't use `auto &&` unless you know what you are doing
-	//	i.e perfect forwarding inside a lambda
+	//  i.e perfect forwarding inside a lambda
 }
 
 void NoAutoStyle()
@@ -294,22 +294,22 @@ void NoAutoStyle()
 void NumericLimits()
 {
 	// [cpp.numericlimits] Use TNumericLimits instead of #defines such as FLT_MAX
-	// 	See http://api.unrealengine.com/INT/API/Runtime/Core/Math/TNumericLimits/
+	//  See http://api.unrealengine.com/INT/API/Runtime/Core/Math/TNumericLimits/
 
 	// E.g. For all floating point types
-	float MaxPositiveFloatValue = TNumericLimits<float>::Max();
-	float MinPositiveFloatValue = TNumericLimits<float>::Min();
-	float MinNegativeFloatValue = TNumericLimits<float>::Lowest();
+    const float MaxPositiveFloatValue = TNumericLimits<float>::Max();
+    const float MinPositiveFloatValue = TNumericLimits<float>::Min();
+    const float MinNegativeFloatValue = TNumericLimits<float>::Lowest();
 
 	// E.g. For integral types
-	int32 MaxPositiveIntValue = TNumericLimits<int32>::Max();
-	int32 MinNegativeIntValue = TNumericLimits<int32>::Min(); // This is the same as Lowest() for all integral types.
+    const int32 MaxPositiveIntValue = TNumericLimits<int32>::Max();
+    const int32 MinNegativeIntValue = TNumericLimits<int32>::Min(); // This is the same as Lowest() for all integral types.
 }
 
 void ASDCodingStandardExampleActor::BeginPlay()
 {
 	// [ue.ecs.super] always call Super:: method for Actor/Component tickable overridden functions
-	// 	other regular methods don't necessary need to do this
+	//  other regular methods don't necessary need to do this
 	Super::BeginPlay();
 }
 
@@ -324,24 +324,24 @@ void ASDCodingStandardExampleActor::OnRep_WantsToSprint()
 {
 }
 
-void USDCodingStandardExampleComponent::LambdaStyle(AActor *ExternalEntity)
+void USDCodingStandardExampleComponent::LambdaStyle(const AActor* ExternalEntity) const
 {
 	// [cpp.lambda.general] use lambda's to your advantage
-	//	especially when they will isolate work in the implementation
-	//	rather than pollute the interface with helper methods
+	//  especially when they will isolate work in the implementation
+	//  rather than pollute the interface with helper methods
 	//
-	//	but don't abuse them - if their body becomes complex enough
-	//	extract into separate function/method
+	//  but don't abuse them - if their body becomes complex enough
+	//  extract into separate function/method
 
 	// [cpp.lambda.dangling] biggest problem in production is creating dangling references
-	//	by capturing objects by reference that die before the lambda gets called
+	//  by capturing objects by reference that die before the lambda gets called
 	auto lambda_dangling = [ExternalEntity]()
 	{
 		// will ExternalEntity still be valid at this point?
 	};
 
 	// [cpp.lambda.this] don't capture `this`!
-	//	instead use the named captures to cherry pick
+	//  instead use the named captures to cherry pick
 	auto lambda_this = [LocalCopy = this->BlueprintGroup.ShowCameraWidget]()
 	{
 		// LocalCopy available irregardless of the fate of parent
@@ -354,9 +354,9 @@ void USDCodingStandardExampleComponent::LambdaStyle(AActor *ExternalEntity)
 	};
 
 	// [cpp.lambda.auto] the type deduction for the captures are quite convoluted
-	//	- by reference: uses template rules; will preserve `const` and `&`
-	//	- by value: uses template rules; will preserve `const`
-	//	- init capture: uses `auto` rules; WILL MESS UP `const` and `&` (add them back manually)
+	//  - by reference: uses template rules; will preserve `const` and `&`
+	//  - by value: uses template rules; will preserve `const`
+	//  - init capture: uses `auto` rules; WILL MESS UP `const` and `&` (add them back manually)
 	const int Original = 0;
 	const int &Reference = Original;
 	auto lambda_auto = [Original, Duplicate = Original, &RefDuplicate = Original, NotReference = Reference]()
@@ -372,7 +372,7 @@ void USDCodingStandardExampleComponent::LambdaStyle(AActor *ExternalEntity)
 static void EnumString()
 {
 	// [cpp.enum.generated.count] Don't put a label to represent the number of values in the enum
-	// 	use EnumAutoGen::GetNumValues<ESDCodingStandardEnum>() instead.
+	//  use EnumAutoGen::GetNumValues<ESDCodingStandardEnum>() instead.
 	constexpr auto NumValues = EnumAutoGen::GetNumValues<ESDCodingStandardEnum>();
 
 	// [cpp.enum.generated] Use the GenerateStringFuncs parameter if you need string conversion or
