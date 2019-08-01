@@ -243,7 +243,7 @@ public:
 
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-		FSDCodingStandardBlueprintVarGroup BlueprintGroup;
+	FSDCodingStandardBlueprintVarGroup BlueprintGroup;
 
 private:
 	// [class.constant] best way to define constants
