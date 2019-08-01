@@ -125,7 +125,7 @@ protected:
 	TWeakObjectPtr<const USkeletalMeshComponent> OtherMesh = nullptr;
 	//  Generally, for storing pointers to classes you do own, use UPROPERTY().
 	UPROPERTY(BlueprintReadOnly, Category = Mesh)
-		const USkeletalMeshComponent* MyMesh = nullptr;
+	const USkeletalMeshComponent* MyMesh = nullptr;
 	//  For more information on other forms of UE4 smart pointers see
 	//  https://docs.unrealengine.com/latest/INT/Programming/UnrealArchitecture/SmartPointerLibrary/ 
 
@@ -133,9 +133,9 @@ protected:
 	//  next to the variable that used them to avoid cluttering the interface with these functions 
 	//  that are not called by client code.
 	UPROPERTY(Transient, ReplicatedUsing = "OnRep_WantsToSprint")
-		bool WantsToSprint = false;
+	bool WantsToSprint = false;
 	UFUNCTION()
-		void OnRep_WantsToSprint();
+	void OnRep_WantsToSprint();
 };
 
 // [ue.gen.struct] [ue.ecs.group] move groups of Blueprint exposed variables into separate structures
@@ -147,18 +147,18 @@ struct FSDCodingStandardBlueprintVarGroup
 {
 	GENERATED_BODY()
 
-		// [vs.plugin] some good tools to help manage these special meta attributes
-		//  it's a pain to write them by hand
-		//  - UE4 Intellisense https://marketplace.visualstudio.com/items?itemName=RxCompiLe.UE4Intellisense
-		//  - SpecifierTool https://marketplace.visualstudio.com/items?itemName=patience2012.SpecifierTool
-		UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Camera)
-		TArray<int> WidgetCameraLevels; // [class.member.def] Unreal arrays start initialized and empty
-
-		// [class.member.def] always provide defaults for member variables
-		//  prefer assigning them here, not in the constructor - that should be reserved
-		//  for more complicated init logic / creation 
+	// [vs.plugin] some good tools to help manage these special meta attributes
+	//  it's a pain to write them by hand
+	//  - UE4 Intellisense https://marketplace.visualstudio.com/items?itemName=RxCompiLe.UE4Intellisense
+	//  - SpecifierTool https://marketplace.visualstudio.com/items?itemName=patience2012.SpecifierTool
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Camera)
-		float CameraTraceVolumeWidth = 96.0f * 5;
+	TArray<int> WidgetCameraLevels; // [class.member.def] Unreal arrays start initialized and empty
+
+	// [class.member.def] always provide defaults for member variables
+	//  prefer assigning them here, not in the constructor - that should be reserved
+	//  for more complicated init logic / creation 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Camera)
+	float CameraTraceVolumeWidth = 96.0f * 5;
 
 	// [class.member.config] member variables that are used as editor config variables
 	//  MUST have a comment supplied as it shows up as the tooltip in the Editor.
@@ -166,17 +166,17 @@ struct FSDCodingStandardBlueprintVarGroup
 	//  If you expect them to be read in blueprints then use BlueprintReadOnly.
 	//  Only use EditAnywhere, EditInstanceOnly or BlueprintReadWrite if it's necessary for your use case.
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Camera)
-		float CameraTraceVolumeHeight = 96.0f * 5;
+	float CameraTraceVolumeHeight = 96.0f * 5;
 
 	// [hardware.cache] try to order data members with cache and alignment in mind
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Camera)
-		bool ShowCameraWidget = true;
+	bool ShowCameraWidget = true;
 
 	// [hardware.cache] for ex grouping similar types like this will minimize the 
 	//  internal padding the compiler will add
 	//  general rule of thumb: sort in descending order by size 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Camera)
-		bool ShowWeaponWidget = true;
+	bool ShowWeaponWidget = true;
 };
 
 // [cpp.enum.strong] use the strongly typed enums rather than old C style + dirty namespace tricks
@@ -212,8 +212,8 @@ public:
 
 	// [func.arg.readability] avoid consecutive chains of same type, avoid too many arguments
 	/* BAD -> */ void FuncWithTooManyArgs(const FVector& Location, const FVector& Origin,
-		const FVector& EndPoint, const FRotator& Rotation, const UPrimitiveComponent& Parent,
-		const AActor& Owner) const; /* <- BAD */
+	const FVector& EndPoint, const FRotator& Rotation, const UPrimitiveComponent& Parent,
+	const AActor& Owner) const; /* <- BAD */
 	//  try to add a helper structure, or possibly split into more functions that are less complex
 
 	// [singleton.no] NEVER USE SINGLETONS!!!
