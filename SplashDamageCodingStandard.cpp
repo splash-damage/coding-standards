@@ -215,7 +215,7 @@ void EngineChanges()
 	if (true)
 	{
 // @SPLASH_DAMAGE_CHANGE: <author email> - BEGIN: <description>
-	// ...
+		// ...
 // @SPLASH_DAMAGE_CHANGE: <author email> - END
 	}
 
