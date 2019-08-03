@@ -107,7 +107,7 @@ void BraceStyle()
 	for (;/*...*/;)
 	{
 	}
-	
+
 	// [cpp.return.early] use early returns to avoid excessive nesting
 	//  especially for pre-conditions / contracts
 	//  one exception is logic flow where too many early returns would hurt readability
@@ -163,17 +163,17 @@ void DontWasteMemory(const AActor& Actor)
 	//  don't go to the heap, go to the stack!
 	TInlineComponentArray<UPrimitiveComponent*> PrimComponents; // 24 item reserved by default
 	Actor.GetComponents(PrimComponents);
-	
+
 	// [ue.container] [ue.ecs.get] Customize the get-ers for this purpose!
 	using TCustomAlloc = TInlineAllocator<32>;
 	TArray<UActorComponent *, TCustomAlloc> LocalItems;
 	Actor.GetComponents<UActorComponent, TCustomAlloc>(LocalItems);
-	
+
 	// [ue.container.reserve] Prepare upfront the containers
 	//  cut down on the need to allocate per-item
 	PrimComponents.Reserve(64);
 	PrimComponents.Init(nullptr, 64);
-	
+
 	// [ue.container.reset] Don't empty, just reset!
 	PrimComponents.Empty(); // BAD - deallocates for new 0 size
 	PrimComponents.Reset(); // GOOD - same effect, but instant, no realloc
@@ -194,10 +194,10 @@ void DontWasteMemory(const AActor& Actor)
 	//  oooooooooooooooooooooooooooooooooooooooooo
 	//
 	//  Main memory access
-	//  ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
-	//  ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
-	//  ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
-	//  ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+	//  oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+	//  oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+	//  oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+	//  oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
 	//
 	//  from https://twitter.com/srigi/status/917998817051541504
 	//
@@ -227,7 +227,7 @@ void EngineChanges()
 
 void GameWithEditorChanges(const TArray<int>& Widgets)
 {
-// [markup.editor] isolate Editor specific changes in game code
+	// [markup.editor] isolate Editor specific changes in game code
 #if WITH_EDITOR
 	// ...
 
@@ -269,13 +269,13 @@ void AutoStyle()
 	//  self calling lambda technique (bonus: very useful for `const`)
 	const auto InitLevel = []()
 	{
-	//  possible example of complicated logic
-	// 	that cannot be easily implemented with the ?: operator
-	//
-	//  if (auto CamMgr = (static_cast<ACameraManager *>(PC))->GetCameraManager())
-	//      return CamMgr->GetCurrentHeightLevel();
-	//  else
-			return 0;
+		//  possible example of complicated logic
+		// 	that cannot be easily implemented with the ?: operator
+		//
+		//  if (auto CamMgr = (static_cast<ACameraManager *>(PC))->GetCameraManager())
+		//      return CamMgr->GetCurrentHeightLevel();
+		//  else
+		return 0;
 	}(); // <- called here immediately, so guaranteed to get a default value
 
 	// [cpp.auto.fwd] Don't use `auto &&` unless you know what you are doing
@@ -297,13 +297,14 @@ void NumericLimits()
 	//  See http://api.unrealengine.com/INT/API/Runtime/Core/Math/TNumericLimits/
 
 	// E.g. For all floating point types
-    const float MaxPositiveFloatValue = TNumericLimits<float>::Max();
-    const float MinPositiveFloatValue = TNumericLimits<float>::Min();
-    const float MinNegativeFloatValue = TNumericLimits<float>::Lowest();
+	const float MaxPositiveFloatValue = TNumericLimits<float>::Max();
+	const float MinPositiveFloatValue = TNumericLimits<float>::Min();
+	const float MinNegativeFloatValue = TNumericLimits<float>::Lowest();
 
 	// E.g. For integral types
-    const int32 MaxPositiveIntValue = TNumericLimits<int32>::Max();
-    const int32 MinNegativeIntValue = TNumericLimits<int32>::Min(); // This is the same as Lowest() for all integral types.
+	const int32 MaxPositiveIntValue = TNumericLimits<int32>::Max();
+	// This is the same as Lowest() for all integral types.
+	const int32 MinNegativeIntValue = TNumericLimits<int32>::Min();
 }
 
 void ASDCodingStandardExampleActor::BeginPlay()
@@ -313,7 +314,8 @@ void ASDCodingStandardExampleActor::BeginPlay()
 	Super::BeginPlay();
 }
 
-void ASDCodingStandardExampleActor::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+void ASDCodingStandardExampleActor::GetLifetimeReplicatedProps(
+	TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
@@ -359,7 +361,8 @@ void USDCodingStandardExampleComponent::LambdaStyle(const AActor* ExternalEntity
 	//  - init capture: uses `auto` rules; WILL MESS UP `const` and `&` (add them back manually)
 	const int Original = 0;
 	const int &Reference = Original;
-	auto lambda_auto = [Original, Duplicate = Original, &RefDuplicate = Original, NotReference = Reference]()
+	auto lambda_auto =
+		[Original, Duplicate = Original, &RefDuplicate = Original, NotReference = Reference]()
 	{
 		// Original => `const int`
 		// Duplicate => `int`

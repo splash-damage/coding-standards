@@ -38,7 +38,8 @@
 //  but NEVER when it comes to things that will be visible from outside
 //  aka public variables, functions, names etc
 
-// [header.iwyu] we shall use IWYU https://docs.unrealengine.com/latest/INT/Programming/UnrealBuildSystem/IWYUReferenceGuide/index.html
+// [header.iwyu] we shall use IWYU 
+//  https://docs.unrealengine.com/latest/INT/Programming/UnrealBuildSystem/IWYUReferenceGuide/index.html
 #include <CoreMinimal.h>
 
 // [header.engine.incl] list all the Engine dependencies with angle brackets includes
@@ -66,7 +67,7 @@
 #include "SplashDamageCodingStandard.generated.h"
 
 // [header.rule.fwd] list as many forward declaration as you can
-//  it's also acceptable to declare them at the usage site, but if you find they recur, bring them up here
+//  it's also acceptable to declare them at the usage site, but if they recur, bring them up here
 class UInputComponent;
 class UCameraComponent;
 class USkeletalMeshComponent;
@@ -92,9 +93,8 @@ public:
 
 	// [class.virtual] explicitly mark up virtual methods
 	//  - always use the `override` specifier
-	//  - use the `final` specifier sparingly and with care as it can have large ramifications on downstream classes.
-	//  - group overridden functions by the class that first defined, them using begin/end comments (as below)
-
+	//  - use the `final` specifier with care as it can have large ramifications on downstream classes.
+	//  - group overridden functions by the class that first defined, them using begin/end comments
 	// Begin AActor override
 	virtual void BeginPlay() override;
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
@@ -111,7 +111,7 @@ public:
 	/* BAD -> */ FORCEINLINE const USkeletalMeshComponent* GetMesh() const { return MyMesh; } /* <- BAD */
 
 	// [class.inline.good] Move the definitions of inline function outside the class
-    const USkeletalMeshComponent* GoodExampleOfInline() const;
+	const USkeletalMeshComponent* GoodExampleOfInline() const;
 
 protected:
 	// [class.order] Do not alternate between functions and variables in the class declaration
@@ -119,22 +119,19 @@ protected:
 
 	// [ue.ecs.split] Split functionality into components
 	//  avoid creating monolithic giant classes!
-	// [header.rule.fwd] example of in-place forward declaration
 
 	// [ue.ecs.gc] never use naked pointers to UObject's, always have UPROPERTY or UE smart ptr
 	//  Generally, for storing pointers to classes you don't own, use TWeakObjectPtr.
-	//  Don't initialise TWeakObjectPtr as it will force you to include the header file for the container class.
-	TWeakObjectPtr<const USkeletalMeshComponent> OtherMesh; // <- GOOD
-	//TWeakObjectPtr<USkeletalMeshComponent> AnotherMesh = nullptr; // <- BAD and not compiling
-	//  Generally, for storing pointers to classes you do own, use UPROPERTY() and initialise.
+	TWeakObjectPtr<const USkeletalMeshComponent> OtherMesh = nullptr;
+	//  Generally, for storing pointers to classes you do own, use UPROPERTY().
 	UPROPERTY(BlueprintReadOnly, Category = Mesh)
 	const USkeletalMeshComponent* MyMesh = nullptr;
 	//  For more information on other forms of UE4 smart pointers see
 	//  https://docs.unrealengine.com/latest/INT/Programming/UnrealArchitecture/SmartPointerLibrary/ 
 
 	// [class.order.replication] As an exception to [class.ordering], declare replication functions
-	//  next to the variable that used them to avoid cluttering the interface with these functions that
-	//  are not called by client code.
+	//  next to the variable that used them to avoid cluttering the interface with these functions 
+	//  that are not called by client code.
 	UPROPERTY(Transient, ReplicatedUsing = "OnRep_WantsToSprint")
 	bool WantsToSprint = false;
 	UFUNCTION()
@@ -173,7 +170,7 @@ struct FSDCodingStandardBlueprintVarGroup
 
 	// [hardware.cache] try to order data members with cache and alignment in mind
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Camera)
-	bool ShowCameraWidget = true; 
+	bool ShowCameraWidget = true;
 
 	// [hardware.cache] for ex grouping similar types like this will minimize the 
 	//  internal padding the compiler will add
@@ -209,20 +206,22 @@ public:
 	enum class ECacheFlags { Use, Disabled, Unspecified };
 	enum class ELogging { Yes, No };
 	/* GOOD -> */ void FuncNiceToReadOnCall(TOrder, ECacheFlags, ELogging) const;
-	//  argument names in declarations are ignored, try to encode as much meaning as possible in the type
-	//  also even this simple typedef/using goes a long way readability wise at the call site:
+	//  argument names in declarations are ignored, try to encode as much meaning as possible in the
+	//  type also even this simple typedef/using goes a long way readability wise at the call site:
 	//  ex: FuncNiceToReadOnCall(FOrder(42), FCacheFlags::Use, FLogFlags::Custom, FLoadOnPlay(false));
 
 	// [func.arg.readability] avoid consecutive chains of same type, avoid too many arguments
-	/* BAD -> */ void FuncWithTooManyArgs(const FVector& Location, const FVector& Origin, const FVector& EndPoint,
-		const FRotator& Rotation, const UPrimitiveComponent& Parent, const AActor& Owner) const; /* <- BAD */
-	//  try to add a helper structure, or maybe you can split in more functions that are less complex each
+	/* BAD -> */ void FuncWithTooManyArgs(const FVector& Location, const FVector& Origin,
+	const FVector& EndPoint, const FRotator& Rotation, const UPrimitiveComponent& Parent,
+	const AActor& Owner) const; /* <- BAD */
+	//  try to add a helper structure, or possibly split into more functions that are less complex
 
 	// [singleton.no] NEVER USE SINGLETONS!!!
 	//  - they are very problematic in multi-threaded scenarios
 	//  - they interfere/break with Hot Reload and plugins
 	//  - discuss alternatives with your lead
-	//  - if you somehow have to add one, first reconsider, then use the Meyers pattern: https://stackoverflow.com/a/1661564
+	//  - if you somehow have to add one, first reconsider
+	//    - then use the Meyers pattern: https://stackoverflow.com/a/1661564
 	/* BAD -> */ static USDCodingStandardExampleComponent* Instance; // defined in .cpp
 	/* VERY BAD -> */ const USDCodingStandardExampleComponent* GetInstance() const { return Instance; }
 
@@ -237,7 +236,7 @@ public:
 	// [cpp.rel_ops] when implementing relation operators, use the binary free form
 	//  as it provides the most flexibility with operands order and usage
 	//  if it needs to access private members, make it `friend` and respect [class.inline.good]
-	//  NOTE: add working functionality only for `==` and `<` everything else can be inferred from them
+	//  NOTE: add working functionality only for `==` and `<` everything else can be inferred
 	friend bool operator == (
 		const USDCodingStandardExampleComponent& lhs,
 		const USDCodingStandardExampleComponent& rhs);
@@ -293,7 +292,7 @@ namespace SDCodingStandardHelpers
 	void PublicHelper(const USDCodingStandardExampleComponent& Object);
 }
 
-// [module.naming] when adding new module folders to the code base follow a consistent naming convention
+// [module.naming] when adding new module folders follow a consistent naming convention
 //  - Interface modules should be prefixed with Interface.
 //  - Game independent modules should be prefixed with Core.
 //  - Game specific modules do not have any prefix.
