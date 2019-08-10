@@ -225,7 +225,7 @@ void EngineChanges()
 	//	 i.e. commenting out the section vs actually removing it
 }
 
-void GameWithEditorChanges(const TArray<int>& Widgets)
+bool GameWithEditorChanges(const TArray<int>& Widgets)
 {
 	// [markup.editor] isolate Editor specific changes in game code
 #if WITH_EDITOR
@@ -233,8 +233,15 @@ void GameWithEditorChanges(const TArray<int>& Widgets)
 
 	// [assert.editor] never assert in Editor code - try to recover to your best effort!
 	check(Widgets.Num()); // <- BAD, will force-crash and potentially destroy work
-	ensureMsgf(Widgets.Num(), TEXT("Must have widgets selected!")); // <- BETTER, doesn't force-crash
+	ensureMsgf(Widgets.Num(), TEXT("Must have widgets selected!")); // <- GOOD, doesn't force-crash
+
+	// BETTER, doesn't force-crash & prevents potential errors
+	if (!ensureMsgf(Widgets.Num(), TEXT("Must have widgets selected!")))
+	{
+		return false;
+	}
 #endif
+	return true;
 }
 
 // [cpp.auto] use `auto` or not at your discretion but BE CONSISTENT
