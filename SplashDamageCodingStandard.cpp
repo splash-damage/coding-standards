@@ -235,7 +235,8 @@ bool GameWithEditorChanges(const TArray<int>& Widgets)
 	check(Widgets.Num()); // <- BAD, will force-crash and potentially destroy work
 	ensureMsgf(Widgets.Num(), TEXT("Must have widgets selected!")); // <- GOOD, doesn't force-crash
 
-	if (!ensureMsgf(Widgets.Num(), TEXT("Must have widgets selected!"))) // <- BETTER, doesn't force-crash & prevents potential errors
+	// BETTER, doesn't force-crash & prevents potential errors
+	if (!ensureMsgf(Widgets.Num(), TEXT("Must have widgets selected!")))
 	{
 		return false;
 	}
