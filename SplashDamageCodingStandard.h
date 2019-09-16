@@ -246,6 +246,12 @@ protected:
 	FSDCodingStandardBlueprintVarGroup BlueprintGroup;
 
 private:
+	// [cpp.dynamicmemory.reference] Used in .cpp to demonstrate
+	// why you shouldn't hold or pass references to dynamic memory
+	void DontHoldReferncesToDynamicMemory(const AActor* ActorToAdd);
+	void InnocentCall();
+	TMap<const AActor*, FSDCodingStandardBlueprintVarGroup> ActorMap;
+
 	// [class.constant] best way to define constants
 	constexpr static int SomeDefaultMagicValue = 0xFF00;
 	//  BAD alternatives:
