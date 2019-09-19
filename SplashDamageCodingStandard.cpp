@@ -378,26 +378,6 @@ void USDCodingStandardExampleComponent::LambdaStyle(const AActor* ExternalEntity
 	};
 }
 
-// [cpp.dynamicmemory.reference] don't hold or pass references to dynamic memory
-// you can't be sure the memory isn't reallocated and your reference will be invalid.
-void USDCodingStandardExampleComponent::DontHoldReferncesToDynamicMemory(const AActor* ActorToAdd)
-{
-	FSDCodingStandardBlueprintVarGroup& DangerousReference = ActorMap.Add(ActorToAdd);
-
-	InnocentCall();
-
-	// What memory are you writing to here? If the map got reallocated in InnocentCall
-	// then you are changing data not contained in the map.
-	DangerousReference.ShowCameraWidget = false;
-}
-
-void USDCodingStandardExampleComponent::InnocentCall()
-{
-	// Add to Actor Map. Potentially causing it to reallocate.
-	const AActor* NewActor = GetWorld()->SpawnActor<AActor>(FVector::ZeroVector, FRotator::ZeroRotator);
-	ActorMap.Add(NewActor);
-}
-
 #ifdef PROJECT_HAS_ENUMAUTOGEN
 static void EnumString()
 {
@@ -426,4 +406,29 @@ void SDCodingStandardHelpers::PublicHelper(const USDCodingStandardExampleCompone
 // [func.default.args] put in a C-style comment any default argument
 void CreateSequence(int32 Start, int32 End, int32 Increment /* = 1 */)
 {
+}
+
+namespace SDDynamicMemory
+{
+	// [cpp.dynamicmemory.reference] don't hold or pass references to dynamic memory
+	// you can't be sure the memory isn't reallocated and your reference will be invalid.
+	static void InnocentCall(UWorld& World,
+		TMap<const AActor*, FSDCodingStandardBlueprintVarGroup>& ActorMap)
+	{
+		// Add to Actor Map. Potentially causing it to reallocate.
+		const AActor* NewActor = World.SpawnActor<AActor>(FVector::ZeroVector, FRotator::ZeroRotator);
+		ActorMap.Add(NewActor);
+	}
+
+	static void DontHoldReferncesToDynamicMemory(const AActor* ActorToAdd)
+	{
+		TMap<const AActor*, FSDCodingStandardBlueprintVarGroup> ActorMap;
+		FSDCodingStandardBlueprintVarGroup& DangerousReference = ActorMap.Add(ActorToAdd);
+
+		SDDynamicMemory::InnocentCall(*ActorToAdd->GetWorld(), ActorMap);
+
+		// What memory are you writing to here? If the map got reallocated in InnocentCall
+		// then you are changing data not contained in the map.
+		DangerousReference.ShowCameraWidget = false;
+	}
 }
