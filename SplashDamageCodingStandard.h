@@ -39,7 +39,7 @@
 //  aka public variables, functions, names etc
 
 // [header.iwyu] we shall use IWYU 
-//  https://docs.unrealengine.com/latest/INT/Programming/UnrealBuildSystem/IWYUReferenceGuide/index.html
+//  https://docs.unrealengine.com/latest/INT/Programming/BuildTools/UnrealBuildTool/IWYU/index.html
 #include <CoreMinimal.h>
 
 // [header.engine.incl] list all the Engine dependencies with angle brackets includes
