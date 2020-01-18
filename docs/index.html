@@ -1,29 +1,142 @@
 <!doctype html>
 <html>
 <head>
-	<style>
-	.embed {
-		display: block;
-		margin: 0 auto;
-		width: 1140px;
-		height: 643px;
-	}
-	</style>
+	<link rel="stylesheet" href="style.css">
+	<title>Coding Standards</title>
 </head>
 <body>
-	<h1>BP_Standard_01_NamingAndComments</h1>
-	<iframe src="https://blueprintue.com/render/u7ycckb3" class="embed" scrolling="no" allowfullscreen></iframe>
+	<div class="header">
+		<div class="row">
+			<div class="column column-1">
+				<img src="assets/logo_sd_logo_white.svg">
+			</div>
+
+			<div class="column column-11 text-right vertical-center">
+				<a href="#BP_Standard_01_NamingAndComments">Naming and Comments</a>
+				<a href="#BP_Standard_02_FunctionsAndMacros">Function and Macros</a>
+				<a href="#BP_Standard_03_Layout">Layout</a>
+				<a href="#BPL_Standard_04_BlueprintFunctionLibraries">Blueprint Function Libraries</a>
+				<a href="#BP_Standard_05_Performance">Performance</a>
+			</div>
+		</div>
+	</div>
+
+	<div class="content-wrapper">	
+		<div class="content-sections">
+			<div class="content">
+				<div class="row">
+					<div class="column">
+						<h1 id="BP_Standard_01_NamingAndComments" class="accordian-toggle">BP_Standard_01_NamingAndComments</h1>
+						<iframe src="https://blueprintue.com/render/u7ycckb3" class="embed" scrolling="no" allowfullscreen></iframe>
+					</div>
+				</div>
+			</div>
+		</div>
+			
+		<div class="content-sections">
+			<div class="content">
+				<div class="row">
+					<div class="column">
+						<h1 id="BP_Standard_02_FunctionsAndMacros" class="accordian-toggle">BP_Standard_02_FunctionsAndMacros</h1>
+						<iframe src="https://blueprintue.com/render/h_8sd3zj" class="embed" scrolling="no" allowfullscreen></iframe>
+					</div>
+				</div>
+			</div>
+		</div>
 	
-	<h1>BP_Standard_02_FunctionsAndMacros</h1>
-	<iframe src="https://blueprintue.com/render/h_8sd3zj" class="embed" scrolling="no" allowfullscreen></iframe>
+		<div class="content-sections">
+			<div class="content">
+				<div class="row">
+					<div class="column">
+						<h1 id="BP_Standard_03_Layout" class="accordian-toggle">BP_Standard_03_Layout</h1>
+						<iframe src="https://blueprintue.com/render/fpfbz87i" class="embed" scrolling="no" allowfullscreen></iframe>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="content-sections">
+			<div class="content">
+				<div class="row">
+					<div class="column">
+						<h1 id="BPL_Standard_04_BlueprintFunctionLibraries" class="accordian-toggle">BPL_Standard_04_BlueprintFunctionLibraries</h1>
+						<iframe src="https://blueprintue.com/render/gb286tpj" class="embed" scrolling="no" allowfullscreen></iframe>
+					</div>
+				</div>
+			</div>
+		</div>
 	
-	<h1>BP_Standard_03_Layout</h1>
-	<iframe src="https://blueprintue.com/render/fpfbz87i" class="embed" scrolling="no" allowfullscreen></iframe>
+		<div class="content-sections">
+			<div class="content">
+				<div class="row">
+					<div class="column">
+						<h1 id="BP_Standard_05_Performance" class="accordian-toggle">BP_Standard_05_Performance</h1>
+						<iframe src="https://blueprintue.com/render/ux3kjgyn" class="embed" scrolling="no" allowfullscreen></iframe>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		(function() {
+			var $html = document.querySelector("html");
+			var $header = document.querySelector(".header");
+			var scrollTop = $html.scrollTop;
+			var scrolling = false;
 	
-	<h1>BPL_Standard_04_BlueprintFunctionLibraries</h1>
-	<iframe src="https://blueprintue.com/render/gb286tpj" class="embed" scrolling="no" allowfullscreen></iframe>
+			function scroll(evt) {
+				var currentScrollTop = $html.scrollTop;
 	
-	<h1>BP_Standard_05_Performance</h1>
-	<iframe src="https://blueprintue.com/render/ux3kjgyn" class="embed" scrolling="no" allowfullscreen></iframe>
+				if (currentScrollTop > 50 && !scrolling)
+				{
+					if (currentScrollTop > scrollTop) {
+						$header.classList.add("hide");
+					}
+					else {
+						$header.classList.remove("hide");
+					}
+				}
+	
+				scrollTop = currentScrollTop;
+			}
+
+			window.addEventListener("scroll", scroll);
+
+			function scrollTo() {
+				var links = document.getElementsByTagName('a');
+				for (var i = 0; i < links.length; i++) {
+					var link = links[i];
+					if ((link.href && link.href.indexOf('#') != -1) && ((link.pathname == location.pathname) || ('/' + link.pathname == location.pathname)) && (link.search == location.search)) {
+						link.onclick = scrollAnchors;
+					}
+				}
+			}
+
+			function scrollAnchors(e, respond = null) {
+				scrolling = true;
+				const distanceToTop = el => Math.floor(el.getBoundingClientRect().top - 100);
+				e.preventDefault();
+				var targetID = (respond) ? respond.getAttribute('href') : this.getAttribute('href');
+				const targetAnchor = document.querySelector(targetID);
+				if (!targetAnchor) return;
+				const originalTop = distanceToTop(targetAnchor);
+				window.scrollBy({ top: originalTop, left: 0, behavior: 'smooth' });
+				const checkIfDone = setInterval(function() {
+					const atBottom = window.innerHeight + window.pageYOffset >= document.body.offsetHeight - 2;
+					if (distanceToTop(targetAnchor) === 0 || atBottom) {
+						targetAnchor.tabIndex = '-1';
+						targetAnchor.focus();
+						window.history.pushState('', '', targetID);
+						clearInterval(checkIfDone);
+						scrolling = false;
+					}
+				}, 100);
+			}
+			scrollTo();
+
+
+		})();
+	</script>
 </body>
 </html>
