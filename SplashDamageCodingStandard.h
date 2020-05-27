@@ -39,6 +39,8 @@
 //  aka public variables, functions, names etc
 
 // [basic.language] Use US English for all names and comments
+//  BAD -> FColor SpecialisedColour;
+//  GOOD -> FColor SpecializedColor;
 
 // [header.iwyu] we shall use IWYU 
 //  https://docs.unrealengine.com/latest/INT/Programming/BuildTools/UnrealBuildTool/IWYU/index.html
