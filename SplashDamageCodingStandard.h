@@ -184,19 +184,16 @@ struct FSDCodingStandardBlueprintVarGroup
 };
 
 // [cpp.enum.strong] use the strongly typed enums rather than old C style + dirty namespace tricks
-// [cpp.enum.generated] Use the GenerateStringFuncs parameter if you need string conversion or
-//  query the number of values. NOTE: only available on certain projects 
-//UENUM(GenerateStringFuncs)
+UENUM()
 enum class ESDCodingStandardEnum // `: uint8` optional underlying type 
 {
 	ValueA,
 	ValueB,
 	ValueC,
 
-	// [cpp.enum.generated.count] Don't put a label to represent the number of values in the enum
-	//  use EnumAutoGen::GetNumValues<ESDCodingStandardEnum>() instead.
-	Max // <- BAD
+	Count UMETA(Hidden)
 };
+ENUM_RANGE_BY_COUNT(ESDCodingStandardEnum, ESDCodingStandardEnum::Count);
 
 UCLASS()
 class USDCodingStandardExampleComponent : public USceneComponent
