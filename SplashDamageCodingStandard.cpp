@@ -378,26 +378,14 @@ void USDCodingStandardExampleComponent::LambdaStyle(const AActor* ExternalEntity
 	};
 }
 
-#ifdef PROJECT_HAS_ENUMAUTOGEN
-static void EnumString()
+static void EnumRange()
 {
-	// [cpp.enum.generated.count] Don't put a label to represent the number of values in the enum
-	//  use EnumAutoGen::GetNumValues<ESDCodingStandardEnum>() instead.
-	constexpr auto NumValues = EnumAutoGen::GetNumValues<ESDCodingStandardEnum>();
-
-	// [cpp.enum.generated] Use the GenerateStringFuncs parameter if you need string conversion or
-	// 	query the number of values. Don't write boilerplate code for this yourself
-	constexpr auto * ValueAString = EnumAutoGen::GetEnumString(ESDCodingStandardEnum::ValueA);
-
-	// [cpp.enum.generated.foreach] Use ForEachPair, ForEachString, ForEachVal functions 
-	// 	if you need to do something for each enum value or string
-	EnumAutoGen::ForEachPair<ESDCodingStandardEnum>(
-		[](ESDCodingStandardEnum Value, const TCHAR * String)
+	// [cpp.enum.range] Enums should define themselves as iterable by specifying one of the ENUM_RANGE_* macros. 
+	for (auto EnumVal : TEnumRange<ESDCodingStandardEnum>())
 	{
 		// Do something
-	});
+	}
 }
-#endif
 
 void SDCodingStandardHelpers::PublicHelper(const USDCodingStandardExampleComponent& Object)
 {
