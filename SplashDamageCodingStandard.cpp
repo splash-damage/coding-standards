@@ -54,7 +54,7 @@
 #include "SplashDamageCodingStandard.h"			// 1) the equivalent header file
 
 #include <Components/PrimitiveComponent.h>		// 2) Engine files
-#include <UnrealNetwork.h>
+#include <Net/UnrealNetwork.h>
 
 //#include <SDWidget.h>							// 3) SD Core files
 
