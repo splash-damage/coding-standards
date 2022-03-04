@@ -98,7 +98,7 @@ public:
 	// [class.virtual] explicitly mark up virtual methods
 	//  - always use the `override` specifier
 	//  - use the `final` specifier with care as it can have large ramifications on downstream classes.
-	//  - group overridden functions by the class that first defined, them using begin/end comments
+	//  - group overridden functions by the class that first defined them using begin/end comments
 	// Begin AActor override
 	virtual void BeginPlay() override;
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
