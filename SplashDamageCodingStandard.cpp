@@ -314,22 +314,22 @@ void NumericLimits()
 	const int32 MinNegativeIntValue = TNumericLimits<int32>::Min();
 }
 
-void ASDCodingStandardExampleActor::BeginPlay()
+void ASDCodingStandardExampleCharacter::BeginPlay()
 {
 	// [ue.ecs.super] always call Super:: method for Actor/Component tickable overridden functions
 	//  other regular methods don't necessary need to do this
 	Super::BeginPlay();
 }
 
-void ASDCodingStandardExampleActor::GetLifetimeReplicatedProps(
+void ASDCodingStandardExampleCharacter::GetLifetimeReplicatedProps(
 	TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-	DOREPLIFETIME(ASDCodingStandardExampleActor, WantsToSprint);
+	DOREPLIFETIME(ASDCodingStandardExampleCharacter, WantsToSprint);
 }
 
-void ASDCodingStandardExampleActor::OnRep_WantsToSprint()
+void ASDCodingStandardExampleCharacter::OnRep_WantsToSprint()
 {
 }
 
