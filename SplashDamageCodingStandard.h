@@ -95,13 +95,15 @@ public:
 	//  respect the rule of 3/5/0 http://en.cppreference.com/w/cpp/language/rule_of_three
 	~ASDCodingStandardExampleActor() = default; // or just remove
 
-	// [class.virtual] explicitly mark up virtual methods
-	//  - always use the `override` specifier
-	//  - use the `final` specifier with care as it can have large ramifications on downstream classes.
-	//  - group overridden functions by the class that first defined them using begin/end comments
+	// [class.virtual] any virtual method declaration must specify one, and only one, of the following:
+	//  - `virtual` for declaration of a new virtual method
+	//  - `override` for overriding an existing virtual method
+	//  - `final` for overrides that allow no further overriding
+	//  `final` should be used with care as it can have large ramifications on downstream classes.
+	//  group overridden functions by the class that first defined them using begin/end comments
 	// Begin AActor override
-	virtual void BeginPlay() override;
-	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	void BeginPlay() override;
+	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	// End AActor override
 
 	// [class.same-line] DON'T write definitions on the same line as declarations!
