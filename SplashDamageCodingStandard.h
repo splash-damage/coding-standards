@@ -79,7 +79,7 @@ class USkeletalMeshComponent;
 UCLASS()
 // [class.name] embed the agreed project codename while following UE4 naming rules. 
 //  - See [module.naming.class]
-class ASDCodingStandardExampleActor : public ACharacter
+class ASDCodingStandardExampleCharacter : public ACharacter
 {
 	GENERATED_BODY() // GENERATED_UCLASS_BODY is deprecated
 
@@ -93,7 +93,7 @@ public:
 
 	// [class.dtor] don't write empty one, default or remove it
 	//  respect the rule of 3/5/0 http://en.cppreference.com/w/cpp/language/rule_of_three
-	~ASDCodingStandardExampleActor() = default; // or just remove
+	~ASDCodingStandardExampleCharacter() = default; // or just remove
 
 	// [class.virtual] any virtual method declaration must specify one, and only one, of the following:
 	//  - `virtual` for declaration of a new virtual method
@@ -273,7 +273,7 @@ private:
 //      this simple function would have been inlined anyway
 //  - having it like this also helps refactoring
 //      you can easily move this to the .cpp without messing up the class definition
-inline const USkeletalMeshComponent* ASDCodingStandardExampleActor::GoodExampleOfInline() const
+inline const USkeletalMeshComponent* ASDCodingStandardExampleCharacter::GoodExampleOfInline() const
 {
 	return bWantsToSprint ? MyMesh : OtherMesh.Get();
 }
