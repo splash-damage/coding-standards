@@ -106,18 +106,19 @@ public:
 	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	// End AActor override
 
-	// [class.same-line] DON'T write definitions on the same line as declarations!
+	// [class.same-line] DON'T write definitions on the same line as declarations, unless they are trivial
 	//  it makes debugging impossible
 	// [class.inline.bad] NEVER USE `inline or `FORCEINLINE` inside a class declaration
 	//  - it's useless and leads to linking errors
 	//  - definitions(bodies) inside a class/struct are implicitly inline!
 	// [comment.useless] DON'T write meaningless comments!
 	//  they should always reflect bigger purpose or reveal hidden details
-	// Returns Mesh subobject
-	/* BAD -> */ FORCEINLINE const USkeletalMeshComponent* GetMesh() const { return MyMesh; } /* <- BAD */
+	// Returns Mesh subobject /* <- BAD */
+	FORCEINLINE /* <- BAD */ const USkeletalMeshComponent* GetMesh() const { return MyMesh; }
 
-	// [class.inline.good] Move the definitions of inline function outside the class
+	// [class.inline.good] Move the definitions of inline function outside the class, unless they are trivial
 	const USkeletalMeshComponent* GoodExampleOfInline() const;
+	bool WantsToSprint() const { return bWantsToSprint; }
 
 protected:
 	// [class.order] Do not alternate between functions and variables in the class declaration
@@ -274,7 +275,7 @@ private:
 //      you can easily move this to the .cpp without messing up the class definition
 inline const USkeletalMeshComponent* ASDCodingStandardExampleActor::GoodExampleOfInline() const
 {
-	return OtherMesh.Get();
+	return bWantsToSprint ? MyMesh : OtherMesh.Get();
 }
 
 // [cpp.rel_ops] when implementing relation operators, use the binary free form
