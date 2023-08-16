@@ -79,19 +79,19 @@ namespace SDCodingStandardHelpers
 void BraceStyle()
 {
 	// illustration purpose only - don't do this in live code (use bit sets instead of many bool's)
-	const bool FailCondition = false, TrueCondition = true,
-		SomethingElse = true, Contract = true, Binding = true;
+	const bool bFailCondition = false, bTrueCondition = true,
+		bSomethingElse = true, bContract = true, bBinding = true;
 
-	if (FailCondition)
+	if (bFailCondition)
 	{
 		return; // even for one liners
 	}
 
-	if (TrueCondition)
+	if (bTrueCondition)
 	{
 		// ...
 	}
-	else if (SomethingElse)
+	else if (bSomethingElse)
 	{
 		// ...
 	}
@@ -111,14 +111,14 @@ void BraceStyle()
 	// [cpp.return.early] use early returns to avoid excessive nesting
 	//  especially for pre-conditions / contracts
 	//  one exception is logic flow where too many early returns would hurt readability
-	if (!Contract && !Binding)
+	if (!bContract && !bBinding)
 	{
 		return;
 	}
 	// versus
-	if (Contract)
+	if (bContract)
 	{
-		if (Binding)
+		if (bBinding)
 		{
 		}
 	}
@@ -254,7 +254,7 @@ void AutoStyle()
 	auto MoreStuff = 42u; // this is unsigned int;
 	auto EvenMore = 42.f; // float
 	auto Precision = 42.0; // double
-	auto Condition = false; // boolean
+	auto bCondition = false; // boolean
 	auto Big = 42ll; // long long
 
 	int *PtrInt = &Int;

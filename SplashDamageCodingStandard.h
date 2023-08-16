@@ -177,13 +177,13 @@ struct FSDCodingStandardBlueprintVarGroup
 
 	// [hardware.cache] try to order data members with cache and alignment in mind
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Camera)
-	bool ShowCameraWidget = true;
+	bool bShowCameraWidget = true;
 
 	// [hardware.cache] for ex grouping similar types like this will minimize the 
 	//  internal padding the compiler will add
 	//  general rule of thumb: sort in descending order by size 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Camera)
-	bool ShowWeaponWidget = true;
+	bool bShowWeaponWidget = true;
 };
 
 // [cpp.enum.strong] use the strongly typed enums rather than old C style + dirty namespace tricks
@@ -257,11 +257,10 @@ private:
 	//      enum { RandomSeemValue = 434334 };
 	//      static int AnotherMagicNumber; // actual value buried in .cpp
 
-	// [naming.bool] Exception from UE4 coding standard:
-	//  DON'T add `b` prefix to bool declaration names!
-	//  instead use English Modal Verbs and variations like: Can, Does, Will, Is, Has, Use, etc
-	bool bInGame, bAttack, bLog, bCustomStencil; /* <- BAD */
-	bool InGame, CanAttack, UseLog, HasCustomStencil; /* <- GOOD */
+	// [naming.bool] follow UE4 coding standard, boolean variables must be prefixed by 'b'.
+	//  Use English modal verbs and variations (Can, Does, Will, Is, Has, Use, etc.) when appropriate.
+	bool InGame, CanAttack, UseLog, HasCustomStencil; /* <- BAD */
+	bool bInGame, bCanAttack, bUseLog, bHasCustomStencil; /* <- GOOD */
 };
 
 // [class.inline.good]
