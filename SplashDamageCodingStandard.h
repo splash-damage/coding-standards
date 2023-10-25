@@ -163,7 +163,9 @@ struct FSDCodingStandardBlueprintVarGroup
 
 	// [class.member.def] always provide defaults for member variables
 	//  prefer assigning them here, not in the constructor - that should be reserved
-	//  for more complicated init logic / creation 
+	//  for more complicated init logic / creation. Specifically avoid
+	//  creating UObjects in the header via CreateDefaultSubobject
+	//  or any other logic which cannot be forward declared.
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Camera)
 	float CameraTraceVolumeWidth = 96.0f * 5;
 
