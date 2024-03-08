@@ -223,6 +223,8 @@ void EngineChanges()
 	// - if the END tag is too far from the BEGIN, repeat the description
 	// - if code is deleted rather than modified, discuss with lead the right approach
 	//	 i.e. commenting out the section vs actually removing it
+	// - do not use markers for cherry-picked changes from Epic's UE5 repository, as merge
+	//   tools will not remove the markers when the same change comes from a later engine upgrade
 }
 
 bool GameWithEditorChanges(const TArray<int>& Widgets)
